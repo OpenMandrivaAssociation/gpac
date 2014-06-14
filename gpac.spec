@@ -35,6 +35,7 @@ Patch8:		gpac-0.5.0-bufferoverflow.patch
 Patch9:		gpac-0.5.0-x264-export.patch
 
 Patch10:	110_all_implicitdecls.patch
+Patch11:	gpac-0.5.0.svn5178-use-system-amr-library.patch
 
 URL:		http://gpac.sourceforge.net/
 License:	LGPLv2+
@@ -157,6 +158,7 @@ which:
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1 -b .0010~
+%patch11 -p1 -b .amr~
 
 %build
 ./configure	--verbose \
