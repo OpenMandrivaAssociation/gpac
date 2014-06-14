@@ -183,10 +183,11 @@ which:
 		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -fPIC -Ofast" \
 		--extra-ldflags="%{ldflags}"
 
-%make
+%make all -C . -C applications -C osmo4_wx
 
 %install
-%makeinstall_std install-lib
+%makeinstall_std -C . -C applications -C osmo4_wx
+%makeinstall_std install-lib 
 
 # menu
 mkdir -p %{buildroot}%{_datadir}/applications
@@ -211,6 +212,7 @@ convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{
 
 %files
 %doc AUTHORS BUGS Changelog COPYING README TODO
+%exclude %{_bindir}/Osmo4
 %{_bindir}/*
 %{_libdir}/%{name}
 %{_mandir}/man1/*
