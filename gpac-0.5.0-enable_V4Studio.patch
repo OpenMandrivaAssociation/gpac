@@ -1,0 +1,55 @@
+Index: gpac-0.5.0.svn5178/applications/Makefile
+===================================================================
+--- gpac-0.5.0.svn5178.orig/applications/Makefile
++++ gpac-0.5.0.svn5178/applications/Makefile
+@@ -25,15 +25,15 @@ V4STUDIODIR=
+ INSTDIRS=mp4client
+ ifeq ($(CONFIG_XUL),no)
+ else
+-#INSTDIRS+=osmozilla
+-#APPDIRS+=osmozilla
++INSTDIRS+=osmozilla
++APPDIRS+=osmozilla
+ endif
+ 
+ #disable due to version incompatibilities
+ ifeq ($(USE_WXWIDGETS), yes)
+-#APPDIRS+=osmo4_wx
+-#V4STUDIODIR=V4Studio
+-#INSTDIRS+=osmo4_wx
++APPDIRS+=osmo4_wx
++V4STUDIODIR=V4Studio
++INSTDIRS+=osmo4_wx
+ endif
+ 
+ ALLDIRS=$(APPDIRS)
+Index: gpac-0.5.0.svn5178/applications/osmo4_wx/Makefile
+===================================================================
+--- gpac-0.5.0.svn5178.orig/applications/osmo4_wx/Makefile
++++ gpac-0.5.0.svn5178/applications/osmo4_wx/Makefile
+@@ -46,7 +46,7 @@ SRCS := $(OBJS:.o=.cpp)
+ all: $(PROG)
+ 
+ Osmo4$(EXE): $(OBJS)
+-	$(CC) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJS) -L../../bin/gcc -lgpac $(WX_LFLAGS) $(LINKFLAGS)
++	$(CC) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJS) -L../../bin/gcc -lgpac -lX11 -lgtk-x11-2.0 -lgdk-x11-2.0 -lstdc++ -lm $(WX_LFLAGS) $(LINKFLAGS)
+ 
+ clean: 
+ 	rm -f $(OBJS) ../../bin/gcc/$(PROG)
+Index: gpac-0.5.0.svn5178/applications/osmozilla/osmo_npapi.cpp
+===================================================================
+--- gpac-0.5.0.svn5178.orig/applications/osmozilla/osmo_npapi.cpp
++++ gpac-0.5.0.svn5178/applications/osmozilla/osmo_npapi.cpp
+@@ -372,10 +372,11 @@ NPError NS_PluginGetValue(NPPVariable aV
+ 	/* explicit plugin call */ \
+ 	"application/x-gpac::GPAC plugin;" \
+ 
+-char * NP_GetMIMEDescription(void)
++/*char * NP_GetMIMEDescription(void)
+ {
+ 	return (char *) GPAC_PLUGIN_MIMETYPES;
+ }
++*/
+ 
+ 
+ NPError NP_GetValue(void *future, NPPVariable aVariable, void *aValue)

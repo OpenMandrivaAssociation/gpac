@@ -1,0 +1,26 @@
+--- gpac/modules/ffmpeg_in/ffmpeg_in.h~	2012-05-24 20:45:43.000000000 +0800
++++ gpac/modules/ffmpeg_in/ffmpeg_in.h	2013-08-13 17:01:25.575831691 +0800
+@@ -95,7 +95,9 @@
+ #define AVMEDIA_TYPE_VIDEO CODEC_TYPE_VIDEO
+ #endif
+ 
+-
++#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
++#define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
++#endif
+ 
+ 
+ /*FFMPEG decoder module */
+--- gpac/modules/ffmpeg_in/ffmpeg_decode.c~	2012-03-01 00:24:24.000000000 +0800
++++ gpac/modules/ffmpeg_in/ffmpeg_decode.c	2013-08-13 17:02:04.906974394 +0800
+@@ -37,6 +37,10 @@
+ #undef USE_AVCODEC2
+ #endif
+ 
++#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
++#define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
++#endif
++
+ 
+ 
+ /**

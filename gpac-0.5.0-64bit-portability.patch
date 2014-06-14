@@ -1,0 +1,21 @@
+diff -urN gpac-0.5.0.svn4192.orig/applications/generators/SVG/svggen.h gpac-0.5.0.svn4192/applications/generators/SVG/svggen.h
+--- gpac-0.5.0.svn4192.orig/applications/generators/SVG/svggen.h	2012-11-03 00:19:59.723621042 +0800
++++ gpac-0.5.0.svn4192/applications/generators/SVG/svggen.h	2012-11-05 08:53:01.166895888 +0800
+@@ -190,6 +190,16 @@
+ 
+ FILE *BeginFile(u32 type);
+ void EndFile(FILE *f, u32 type);
+-
++SVGGenAttribute *findAttribute(SVGGenElement *e, char *name);
++void generateAttributes(FILE *output, GF_List *attributes, Bool inDefine);
++u32 generateCoreInfo(FILE *output, SVGGenElement *elt, u32 start);
++void generate_laser_tables(GF_List *svg_elements);
++void generate_table(GF_List *elements);
++void generateSVGCode_V1(GF_List *svg_elements);
++void generateSVGCode_V2(GF_List *svg_elements);
++void generateSVGCode_V3(GF_List *svg_elements);
++void svgNameToImplementationName(xmlChar *svg_name, char implementation_name[50]);
++u32 generateGenericInfo(FILE *output, SVGGenElement *elt, u32 index, char *pointer_root, u32 start);
++void generate_laser_tables_da(GF_List *atts);
+ 
+ #endif // _SVGGEN_H_

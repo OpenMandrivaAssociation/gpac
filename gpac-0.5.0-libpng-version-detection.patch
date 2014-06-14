@@ -1,0 +1,72 @@
+Index: gpac-0.5.0.svn4668/configure
+===================================================================
+--- gpac-0.5.0.svn4668.orig/configure
++++ gpac-0.5.0.svn4668/configure
+@@ -1149,27 +1149,40 @@ int main( void ) { return 0; }
+ EOF
+ 
+ if test "$cross_prefix" = "" ; then
+-    png_cflags="-I$prefix/include"
+-    png_lflags="-L$prefix/lib -lpng -lz"
++    png_flavor=""
++    if [ -d /usr/include/libpng16 ] ; then \
++	png_flavor="png16"
++    elif [ -d /usr/include/libpng15 ] ; then \
++	png_flavor="png15"
++    elif [ -d /usr/include/libpng14 ] ; then \
++	png_flavor="png14"
++    elif [ -d /usr/include/libpng12 ] ; then \
++        png_flavor="png12"
++    else
++	png_flavor="png"
++    fi
++
++    png_cflags="-I$prefix/include/lib$png_flavor"
++    png_lflags="-L$prefix/$libdir -l$png_flavor -lz"
+     #-nostdlib prevents from searching standard compiler libraries
+     #if $cc -o $TMPO $TMPC -nostdlib $png_cflags $png_lflags 2> /dev/null  ; then
+     if $cc -o $TMPO $TMPC $png_cflags $png_lflags $LDFLAGS 2> /dev/null  ; then
+         has_png="system"
+-    elif $cc -o $TMPO $TMPC $LDFLAGS -lpng -lz 2> /dev/null  ; then
++    elif $cc -o $TMPO $TMPC $LDFLAGS -l$png_flavor -lz 2> /dev/null  ; then
+         has_png="system"
+     elif test "$alt_macosx_dir" != "" ; then
+-        if $cc -o $TMPO $TMPC -I$alt_macosx_dir/include -L$alt_macosx_dir/lib $LDFLAGS -lpng 2> /dev/null ; then
++        if $cc -o $TMPO $TMPC -I$alt_macosx_dir/include/lib$png_flavor -L$alt_macosx_dir/$libdir $LDFLAGS -l$png_flavor 2> /dev/null ; then
+             has_png="system"
+         fi
+     fi
+ fi
+ if test "$has_png" = "no" ; then
+-    if $cc -o $TMPO $TMPC -I$local_inc/png -L$local_lib -lpng 2> /dev/null  ; then
++    if $cc -o $TMPO $TMPC -I$local_inc/$png_flavor -L$local_lib -l$png_flavor 2> /dev/null  ; then
+         has_png="local"
+     fi
+ fi
+ 
+-
++sed -i "s/png.h/lib$png_flavor\/png.h/" src/media_tools/img.c
+ 
+ #look for MAD support
+ cat > $TMPC << EOF
+@@ -2823,6 +2836,7 @@ if test "$has_jpeg" != "no" ; then
+ fi
+ 
+ echo "CONFIG_PNG=$has_png" >> config.mak
++echo "png_flavor=$png_flavor" >> config.mak
+ if test "$has_png" != "no" ; then
+     echo "#define GPAC_HAS_PNG" >> $TMPH
+ fi
+Index: gpac-0.5.0.svn4668/src/Makefile
+===================================================================
+--- gpac-0.5.0.svn4668.orig/src/Makefile
++++ gpac-0.5.0.svn4668/src/Makefile
+@@ -495,7 +495,7 @@ endif
+ #5 - PNG support
+ ifeq ($(CONFIG_PNG), no)
+ else
+-LINKLIBS+= -lpng
++LINKLIBS+= -l$(png_flavor)
+ ifeq ($(CONFIG_PNG), local)
+ NEED_LOCAL_LIB="yes"
+ MEDIATOOLS_CFLAGS+=-I"$(LOCAL_INC_PATH)/png"

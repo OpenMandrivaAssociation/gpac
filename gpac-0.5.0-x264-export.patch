@@ -1,0 +1,12 @@
+Index: gpac-0.5.0.svn5178/include/gpac/isomedia.h
+===================================================================
+--- gpac-0.5.0.svn5178.orig/include/gpac/isomedia.h
++++ gpac-0.5.0.svn5178/include/gpac/isomedia.h
+@@ -1042,6 +1042,7 @@ GF_Err gf_isom_set_track_layout_info(GF_
+ /*sets track matrix - all coordinates are expressed as 16.16 floating points*/
+ GF_Err gf_isom_set_track_matrix(GF_ISOFile *the_file, u32 trackNumber, u32 matrix[9]);
+ 
++GF_EXPORT
+ GF_Err gf_isom_set_pixel_aspect_ratio(GF_ISOFile *the_file, u32 trackNumber, u32 StreamDescriptionIndex, u32 hSpacing, u32 vSpacing);
+ 
+ /*set SR & nbChans for audio description*/

@@ -1,0 +1,13 @@
+Index: gpac-0.5.0.svn4668/include/gpac/internal/smjs_api.h
+===================================================================
+--- gpac-0.5.0.svn4668.orig/include/gpac/internal/smjs_api.h
++++ gpac-0.5.0.svn4668/include/gpac/internal/smjs_api.h
+@@ -47,7 +47,7 @@ typedef struct
+ 	JSObject *_proto;
+ } GF_JSClass;
+ 
+-
++#define USE_FFDEV_18
+ 
+ /*new APIs*/
+ #if (JS_VERSION>=185)
