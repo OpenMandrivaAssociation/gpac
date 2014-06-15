@@ -41,7 +41,7 @@ Patch16:	gpac-0.5.0-respect_ldflags.patch
 Patch17:	gpac-0.5.0-link.patch
 Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
-#Patch19:	gpac-0.5.0-use-correct-mozjs185-pkgconfig.patch
+Patch20:	gpac-0.5.0-svn5277-fix-buffer-overflow.patch
 
 URL:		http://gpac.sourceforge.net/
 License:	LGPLv2+
