@@ -11,15 +11,6 @@
  #endif
  
  typedef struct
-@@ -210,7 +210,7 @@ static GF_Err AMR_ProcessData(GF_MediaDe
- 			for (i = 0; i < L_FRAME; i++) {
- 				synth[i] = EHF_MASK;
- 			}
--		} else {     
-+	} else {     
- 			/* decode frame */
- 			Speech_Decode_Frame(ctx->speech_decoder_state, ctx->mode, &serial[1], ctx->rx_type, synth);
- 		}
 --- gpac-0.5.0.svn5178/modules/amr_dec/Makefile.nor~	2014-06-14 19:43:10.038680822 +0200
 +++ gpac-0.5.0.svn5178/modules/amr_dec/Makefile	2014-06-14 19:43:22.725462972 +0200
 @@ -17,30 +17,31 @@ LDFLAGS+=-pg
@@ -124,39 +115,4 @@
  endif
  
  
---- gpac-0.5.0.svn5178/modules/amr_float_dec/amr_float_dec.c.nor~	2014-06-14 19:56:03.185686531 +0200
-+++ gpac-0.5.0.svn5178/modules/amr_float_dec/amr_float_dec.c	2014-06-14 19:56:05.715709372 +0200
-@@ -46,12 +46,12 @@
- 
- #ifdef GPAC_HAS_AMR_FT
- /*AMR WB*/
--#include <amrnb/interf_dec.h>
-+#include <opencore-amrnb/interf_dec.h>
- #endif
- 
- #ifdef GPAC_HAS_AMR_FT_WB
- /*AMR WB*/
--#include <amrwb/dec_if.h>
-+#include <opencore-amrwb/dec_if.h>
- #endif
- 
- #endif
---- gpac-0.5.0.svn5178/modules/amr_float_dec/Makefile.amr~	2014-06-14 19:57:11.309623491 +0200
-+++ gpac-0.5.0.svn5178/modules/amr_float_dec/Makefile	2014-06-14 19:57:26.553091423 +0200
-@@ -23,14 +23,14 @@ AMR_LIBS=
- #AMR NB obj
- CFLAGS+=-DGPAC_HAS_AMR_FT
- ifeq ($(CONFIG_AMR_NB_FT), yes)
--AMR_LIBS+=-lamrnb
-+AMR_LIBS+=-lopencore-amrnb
- endif
- 
- 
- #AMR WB obj
- CFLAGS+=-DGPAC_HAS_AMR_FT_WB
- ifeq ($(CONFIG_AMR_WB_FT), yes)
--AMR_LIBS+=-lamrwb
-+AMR_LIBS+=-lopencore-amrwb
- endif
- 
- 
+

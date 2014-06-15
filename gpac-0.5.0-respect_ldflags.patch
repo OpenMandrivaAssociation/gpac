@@ -1,13 +1,5 @@
-http://bugs.gentoo.org/258331
-http://bugs.gentoo.org/310257
-http://bugs.gentoo.org/331067
-
-Also fix underlinkage of the pulse module.
-
-Index: gpac/modules/jack/Makefile
-===================================================================
---- gpac.orig/modules/jack/Makefile
-+++ gpac/modules/jack/Makefile
+--- gpac-0.5.0.svn5178/modules/jack/Makefile.0016~	2014-03-22 18:32:48.147082370 +0100
++++ gpac-0.5.0.svn5178/modules/jack/Makefile	2014-06-15 17:17:42.473420855 +0200
 @@ -25,7 +25,7 @@ LIB=gm_jack.$(DYN_LIB_SUFFIX)
  all: $(LIB)
  
@@ -15,12 +7,10 @@ Index: gpac/modules/jack/Makefile
 -	$(CC) $(SHFLAGS) -o ../../bin/gcc/$@ $(OBJS) $(EXTRALIBS) -L../../bin/gcc -lgpac -L/usr/lib  -ljack
 +	$(CC) $(SHFLAGS) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJS) $(EXTRALIBS) -L../../bin/gcc -lgpac -L/usr/lib  -ljack
  
- 
- %.o: %.c
-Index: gpac/modules/oss_audio/Makefile
-===================================================================
---- gpac.orig/modules/oss_audio/Makefile
-+++ gpac/modules/oss_audio/Makefile
+ clean: 
+ 	rm -f $(OBJS) ../../bin/gcc/$(LIB)
+--- gpac-0.5.0.svn5178/modules/oss_audio/Makefile.0016~	2014-03-22 18:32:43.346142390 +0100
++++ gpac-0.5.0.svn5178/modules/oss_audio/Makefile	2014-06-15 17:17:42.473420855 +0200
 @@ -35,7 +35,7 @@ LIB=gm_oss_audio.$(DYN_LIB_SUFFIX)
  all: $(LIB)
  
@@ -30,10 +20,8 @@ Index: gpac/modules/oss_audio/Makefile
  ifeq ($(STATICBUILD),yes)
  	$(CC) $(SHFLAGS) $(LDFLAGS) -o ../../bin/gcc/gm_oss_audio-static.$(DYN_LIB_SUFFIX) $(OBJS) $(EXTRALIBS) -L../../bin/gcc -lgpac_static $(OSS_LDFLAGS)
  endif
-Index: gpac/modules/pulseaudio/Makefile
-===================================================================
---- gpac.orig/modules/pulseaudio/Makefile
-+++ gpac/modules/pulseaudio/Makefile
+--- gpac-0.5.0.svn5178/modules/pulseaudio/Makefile.0016~	2014-03-22 18:32:44.197131751 +0100
++++ gpac-0.5.0.svn5178/modules/pulseaudio/Makefile	2014-06-15 17:17:42.473420855 +0200
 @@ -25,7 +25,7 @@ LIB=gm_pulseaudio.$(DYN_LIB_SUFFIX)
  all: $(LIB)
  
@@ -41,5 +29,5 @@ Index: gpac/modules/pulseaudio/Makefile
 -	$(CC) $(SHFLAGS) -o ../../bin/gcc/$@ $(OBJS) $(EXTRALIBS) -L../../bin/gcc -lgpac -L/usr/lib -lpulse-simple
 +	$(CC) $(SHFLAGS) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJS) $(EXTRALIBS) -L../../bin/gcc -lgpac -L/usr/lib -lpulse-simple -lpulse
  
- 
- %.o: %.c
+ clean: 
+ 	rm -f $(OBJS) ../../bin/gcc/$(LIB)

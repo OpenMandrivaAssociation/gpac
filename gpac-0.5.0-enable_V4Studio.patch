@@ -1,7 +1,5 @@
-Index: gpac-0.5.0.svn5178/applications/Makefile
-===================================================================
---- gpac-0.5.0.svn5178.orig/applications/Makefile
-+++ gpac-0.5.0.svn5178/applications/Makefile
+--- gpac-0.5.0-svn5277/applications/Makefile.0001~	2013-10-08 13:13:57.000000000 +0200
++++ gpac-0.5.0-svn5277/applications/Makefile	2014-06-15 18:38:51.569808337 +0200
 @@ -25,15 +25,15 @@ V4STUDIODIR=
  INSTDIRS=mp4client
  ifeq ($(CONFIG_XUL),no)
@@ -23,10 +21,8 @@ Index: gpac-0.5.0.svn5178/applications/Makefile
  endif
  
  ALLDIRS=$(APPDIRS)
-Index: gpac-0.5.0.svn5178/applications/osmo4_wx/Makefile
-===================================================================
---- gpac-0.5.0.svn5178.orig/applications/osmo4_wx/Makefile
-+++ gpac-0.5.0.svn5178/applications/osmo4_wx/Makefile
+--- gpac-0.5.0-svn5277/applications/osmo4_wx/Makefile.0001~	2014-01-24 20:44:54.000000000 +0100
++++ gpac-0.5.0-svn5277/applications/osmo4_wx/Makefile	2014-06-15 18:38:51.569808337 +0200
 @@ -46,7 +46,7 @@ SRCS := $(OBJS:.o=.cpp)
  all: $(PROG)
  
@@ -36,20 +32,19 @@ Index: gpac-0.5.0.svn5178/applications/osmo4_wx/Makefile
  
  clean: 
  	rm -f $(OBJS) ../../bin/gcc/$(PROG)
-Index: gpac-0.5.0.svn5178/applications/osmozilla/osmo_npapi.cpp
-===================================================================
---- gpac-0.5.0.svn5178.orig/applications/osmozilla/osmo_npapi.cpp
-+++ gpac-0.5.0.svn5178/applications/osmozilla/osmo_npapi.cpp
-@@ -372,10 +372,11 @@ NPError NS_PluginGetValue(NPPVariable aV
+--- gpac-0.5.0-svn5277/applications/osmozilla/osmo_npapi.cpp.0001~	2014-06-15 18:38:51.573141701 +0200
++++ gpac-0.5.0-svn5277/applications/osmozilla/osmo_npapi.cpp	2014-06-15 18:39:14.676693025 +0200
+@@ -372,11 +372,12 @@ NPError NS_PluginGetValue(NPPVariable aV
  	/* explicit plugin call */ \
  	"application/x-gpac::GPAC plugin;" \
- 
--char * NP_GetMIMEDescription(void)
-+/*char * NP_GetMIMEDescription(void)
+  
++/*
+ char * NP_GetMIMEDescription(void)
  {
  	return (char *) GPAC_PLUGIN_MIMETYPES;
  }
+-
 +*/
  
- 
  NPError NP_GetValue(void *future, NPPVariable aVariable, void *aValue)
+ {

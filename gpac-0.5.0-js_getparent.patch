@@ -1,14 +1,11 @@
-Index: gpac-0.5.0.svn5178/src/scenegraph/html5_mse_smjs.c
-===================================================================
---- gpac-0.5.0.svn5178.orig/src/scenegraph/html5_mse_smjs.c
-+++ gpac-0.5.0.svn5178/src/scenegraph/html5_mse_smjs.c
-@@ -761,7 +761,8 @@ void gf_arraybuffer_del(GF_HTML_ArrayBuf
-     if (buffer) {
-         if (del_js && buffer->_this) {
+--- gpac-0.5.0-svn5277/src/scenegraph/html5_mse_smjs.c.0007~	2014-06-15 18:40:15.073929282 +0200
++++ gpac-0.5.0-svn5277/src/scenegraph/html5_mse_smjs.c	2014-06-15 18:41:20.991217173 +0200
+@@ -761,7 +761,7 @@ void gf_arraybuffer_del(GF_HTML_ArrayBuf
+ 	if (buffer) {
+ 		if (del_js && buffer->_this) {
  			/*if we have a JS object, make sure the parent XHR doesn't point to us ...*/
--			JSObject *xhro = JS_GetParent(buffer->c, buffer->_this); 
-+			/*JSObject *xhro = JS_GetParent(buffer->c, buffer->_this); */
-+			JSObject *xhro = JS_GetParent(buffer->_this);
+-			JSObject *xhro = JS_GetParent(buffer->c, buffer->_this);
++			JSObject *xhro = JS_GetParent(buffer->c);
  			if (xhro) {
  				void *xhr_ctx = SMJS_GET_PRIVATE(buffer->c, xhro);
  				xhr_del_array_buffer(xhr_ctx);
