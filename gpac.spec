@@ -45,7 +45,7 @@ Patch20:	gpac-0.5.0-svn5277-fix-buffer-overflow.patch
 
 URL:		http://gpac.sourceforge.net/
 License:	LGPLv2+
-Group:		Video/Utilities
+Group:		Video
 BuildRequires:	imagemagick
 BuildRequires:	a52dec-devel
 BuildRequires:	graphviz
