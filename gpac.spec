@@ -55,7 +55,7 @@ BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(jack)
-BuildRequires:	%{_lib}faad2-devel
+BuildRequires:	faad2-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	pkgconfig(libavcodec)
 BuildRequires:	pkgconfig(libIDL-2.0)
