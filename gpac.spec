@@ -43,6 +43,7 @@ Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
 Patch20:	gpac-0.5.0-svn5277-fix-buffer-overflow.patch
 Patch21:	gpac-0.5.0-ffmpeg_version.patch
+Patch22:	gpac-0.5.0-ffmpeg_avformat56.patch
 
 URL:		http://gpac.sourceforge.net/
 License:	LGPLv2+
