@@ -1,0 +1,99 @@
+Index: gpac/modules/redirect_av/ffmpeg_ts_muxer.c
+===================================================================
+--- gpac/modules/redirect_av/ffmpeg_ts_muxer.c	(revision 5360)
++++ gpac/modules/redirect_av/ffmpeg_ts_muxer.c	(revision 5361)
+@@ -164,11 +164,11 @@
+ }
+ 
+ 
+-#if LIBAVFORMAT_VERSION_MAJOR < 53 && LIBAVFORMAT_VERSION_MINOR < 45
++#if ((LIBAVFORMAT_VERSION_MAJOR == 52) && (LIBAVFORMAT_VERSION_MINOR <= 47)) || (LIBAVFORMAT_VERSION_MAJOR < 52)
+ #define GUESS_FORMAT guess_stream_format
+ #else
+ #define GUESS_FORMAT av_guess_format
+-#endif /*  LIBAVFORMAT_VERSION_MAJOR < 53 && LIBAVFORMAT_VERSION_MINOR < 45 */
++#endif
+ 
+ GF_AbstractTSMuxer * ts_amux_new(GF_AVRedirect * avr, u32 videoBitrateInBitsPerSec, u32 width, u32 height, u32 audioBitRateInBitsPerSec) {
+ 	GF_AbstractTSMuxer * ts = gf_malloc( sizeof(GF_AbstractTSMuxer));
+Index: gpac/modules/redirect_av/ts_muxer.h
+===================================================================
+--- gpac/modules/redirect_av/ts_muxer.h	(revision 5360)
++++ gpac/modules/redirect_av/ts_muxer.h	(revision 5361)
+@@ -32,7 +32,7 @@
+ #include <gpac/tools.h>
+ #include <libavcodec/avcodec.h>
+ 
+-#if (LIBAVCODEC_VERSION_MAJOR <= 52) && (LIBAVCODEC_VERSION_MINOR <= 20)
++#if ((LIBAVCODEC_VERSION_MAJOR == 52) && (LIBAVCODEC_VERSION_MINOR <= 20)) || (LIBAVCODEC_VERSION_MAJOR < 52)
+ #undef USE_AVCODEC2
+ #else
+ #define USE_AVCODEC2	1
+Index: gpac/modules/ffmpeg_in/ffmpeg_in.h
+===================================================================
+--- gpac/modules/ffmpeg_in/ffmpeg_in.h	(revision 5360)
++++ gpac/modules/ffmpeg_in/ffmpeg_in.h	(revision 5361)
+@@ -99,7 +99,7 @@
+ 
+ #ifndef FFMPEG_OLD_HEADERS
+ 
+-#if (LIBAVCODEC_VERSION_MAJOR <= 52) && (LIBAVCODEC_VERSION_MINOR <= 20)
++#if ((LIBAVCODEC_VERSION_MAJOR == 52) && (LIBAVCODEC_VERSION_MINOR <= 20)) || (LIBAVCODEC_VERSION_MAJOR < 52)
+ #undef USE_AVCODEC2
+ #else
+ #define USE_AVCODEC2	1
+Index: gpac/modules/ffmpeg_in/ffmpeg_demux.c
+===================================================================
+--- gpac/modules/ffmpeg_in/ffmpeg_demux.c	(revision 5360)
++++ gpac/modules/ffmpeg_in/ffmpeg_demux.c	(revision 5361)
+@@ -54,17 +54,14 @@
+ #endif /* AVERROR_NOFMT */
+ 
+ 
+-#if (LIBAVFORMAT_VERSION_MAJOR >= 54) && (LIBAVFORMAT_VERSION_MINOR >= 20)
++#if ((LIBAVFORMAT_VERSION_MAJOR == 54) && (LIBAVFORMAT_VERSION_MINOR >= 20)) || (LIBAVFORMAT_VERSION_MAJOR > 54)
+ 
+ #define av_find_stream_info(__c)	avformat_find_stream_info(__c, NULL)
+-#ifndef FF_API_FORMAT_PARAMETERS
+-#define FF_API_FORMAT_PARAMETERS	1
++#define USE_AVFORMAT_OPEN_INPUT	1
+ #endif
+ 
+-#endif
+ 
+ 
+-
+ static u32 FFDemux_Run(void *par)
+ {
+ 	AVPacket pkt;
+@@ -275,7 +272,7 @@
+ 	}
+ 	if (!has_audio && !has_video) goto exit;
+ 	ret = 1;
+-#if LIBAVFORMAT_VERSION_MAJOR < 53 && LIBAVFORMAT_VERSION_MINOR < 45
++#if ((LIBAVFORMAT_VERSION_MAJOR == 52) && (LIBAVFORMAT_VERSION_MINOR <= 47)) || (LIBAVFORMAT_VERSION_MAJOR < 52)
+ 	fmt_out = guess_stream_format(NULL, url, NULL);
+ #else
+ 	fmt_out = av_guess_format(NULL, url, NULL);
+@@ -588,7 +585,7 @@
+ 			}
+ 			/*setup downloader*/
+ 			av_in->flags |= AVFMT_NOFILE;
+-#if FF_API_FORMAT_PARAMETERS /*commit ffmpeg 603b8bc2a109978c8499b06d2556f1433306eca7*/
++#ifdef USE_AVFORMAT_OPEN_INPUT /*commit ffmpeg 603b8bc2a109978c8499b06d2556f1433306eca7*/
+ 			res = avformat_open_input(&ffd->ctx, szName, av_in, NULL);
+ #else
+ 			res = av_open_input_stream(&ffd->ctx, &ffd->io, szName, av_in, NULL);
+Index: gpac/modules/ffmpeg_in/ffmpeg_decode.c
+===================================================================
+--- gpac/modules/ffmpeg_in/ffmpeg_decode.c	(revision 5360)
++++ gpac/modules/ffmpeg_in/ffmpeg_decode.c	(revision 5361)
+@@ -28,7 +28,7 @@
+ #include <libavcodec/avcodec.h>
+ 
+ 
+-#if (LIBAVCODEC_VERSION_MAJOR >= 55) && (LIBAVCODEC_VERSION_MINOR >= 38)
++#if ((LIBAVCODEC_VERSION_MAJOR == 55) && (LIBAVCODEC_VERSION_MINOR >= 38)) || (LIBAVCODEC_VERSION_MAJOR > 55)
+ #define HAS_HEVC
+ 
+ #include <libavutil/opt.h>

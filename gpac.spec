@@ -12,7 +12,7 @@ Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	0.5.0
 %define	svnrel	5277
-Release:	%{?svnrel:0.svn%{svnrel}.}1
+Release:	%{?svnrel:0.svn%{svnrel}.}2
 
 Source0:	http://downloads.sourceforge.net/gpac/%{name}-%{version}%{?svnrel:-svn%{svnrel}}.tar.xz
 #PATCH-FIX-openSUSE i@marguerite.su - openSUSE only fix for sf#3574796
@@ -42,6 +42,7 @@ Patch17:	gpac-0.5.0-link.patch
 Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
 Patch20:	gpac-0.5.0-svn5277-fix-buffer-overflow.patch
+Patch21:	gpac-0.5.0-ffmpeg_version.patch
 
 URL:		http://gpac.sourceforge.net/
 License:	LGPLv2+
