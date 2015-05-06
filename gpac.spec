@@ -4,15 +4,15 @@
 %define Werror_cflags %{nil}
 
 # looks like no stable ABI => version is %major
-%define major	3
+%define major	4
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	0.5.0
-%define	svnrel	5277
-Release:	%{?svnrel:0.svn%{svnrel}.}2
+%define	svnrel	5619
+Release:	%{?svnrel:0.svn%{svnrel}.}1
 
 Source0:	http://downloads.sourceforge.net/gpac/%{name}-%{version}%{?svnrel:-svn%{svnrel}}.tar.xz
 #PATCH-FIX-openSUSE i@marguerite.su - openSUSE only fix for sf#3574796
@@ -36,14 +36,11 @@ Patch9:		gpac-0.5.0-x264-export.patch
 Patch10:	110_all_implicitdecls.patch
 Patch11:	gpac-0.5.0.svn5178-use-system-amr-library.patch
 Patch12:	gpac-0.5.0-build-fixes.patch
-Patch15:	gpac-0.5.0-mp42ts.patch
 Patch16:	gpac-0.5.0-respect_ldflags.patch
 Patch17:	gpac-0.5.0-link.patch
 Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
-Patch20:	gpac-0.5.0-svn5277-fix-buffer-overflow.patch
-Patch21:	gpac-0.5.0-ffmpeg_version.patch
-Patch22:	gpac-0.5.0-ffmpeg_avformat56.patch
+Patch20:	gpac-0.5.0-compile.patch
 
 URL:		http://gpac.sourceforge.net/
 License:	LGPLv2+
@@ -80,6 +77,7 @@ BuildRequires:	pkgconfig(xv)
 BuildRequires:	subversion
 BuildRequires:	xvid-devel
 BuildRequires:	wxgtku-devel
+BuildRequires:	firefox-devel
 # (Anssi 05/2011) Otherwise partially builds against older version of itself:
 BuildConflicts:	gpac-devel
 BuildConflicts:	gpac < 0.4.5-2 
@@ -230,13 +228,16 @@ for i in MPEG4 SVG X3D; do
     install -m755 applications/generators/$i/${i}Gen \
     	%{buildroot}%{_bindir}
 done
-install -m755 bin/gcc/mp4* %{buildroot}%{_bindir}
+install -m755 bin/gcc/MP4* %{buildroot}%{_bindir}
 
 # udptsseg
 install -m755 bin/gcc/udptsseg %{buildroot}%{_bindir}
 
 # Osmo4
 install -m755 bin/gcc/Osmo4 %{buildroot}%{_bindir}
+
+# It used to be lower case, now it's upper... Let's support both
+ln -s MP42TS %{buildroot}%{_bindir}/mp42ts
 
 # menu
 mkdir -p %{buildroot}%{_datadir}/applications
@@ -265,6 +266,7 @@ convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{
 %{_bindir}/DashCast
 %{_bindir}/MP4Box
 %{_bindir}/MP4Client
+%{_bindir}/MP42TS
 %{_bindir}/MPEG4Gen
 %{_bindir}/X3DGen
 %{_bindir}/SVGGen

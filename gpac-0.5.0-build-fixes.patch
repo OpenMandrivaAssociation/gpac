@@ -1,14 +1,14 @@
---- gpac-0.5.0-svn5277/configure.0012~	2014-06-15 19:07:21.999298520 +0200
-+++ gpac-0.5.0-svn5277/configure	2014-06-15 19:07:22.022632074 +0200
+--- gpac-0.5.0-svn5619/configure.0012~	2015-05-06 18:24:58.413007597 +0200
++++ gpac-0.5.0-svn5619/configure	2015-05-06 18:30:23.496997864 +0200
 @@ -101,6 +101,7 @@ has_xmlrpc="no"
  has_openjpeg="no"
  gprof_build="no"
  static_build="no"
 +static_libs="no"
  want_pic="no"
+ want_gcov="no"
  has_joystick="no"
- has_xul="no"
-@@ -230,6 +231,7 @@ GPAC configuration options:
+@@ -233,6 +234,7 @@ GPAC configuration options:
    --disable-platinum       disable Platinum UPnP support
    --disable-alsa           disable Alsa audio
    --disable-oss-audio      disable OSS audio
@@ -16,7 +16,7 @@
    --enable-jack            enable  Jack audio
    --disable-jack           disable Jack audio
    --enable-pulseaudio      enable  Pulse audio
-@@ -245,6 +247,7 @@ GPAC configuration options:
+@@ -248,6 +250,7 @@ GPAC configuration options:
    --enable-amr-wb          enable AMR WB library
    --enable-amr             enable both AMR NB and WB libraries
    --enable-static-bin      GPAC static build
@@ -24,7 +24,7 @@
    --static-mp4box          configure for static linking of MP4Box.
    --enable-depth           enables depth handling in the compositor
  
-@@ -1774,6 +1777,8 @@ for opt do
+@@ -1788,6 +1791,8 @@ for opt do
              ;;
          --enable-static-bin) static_build="yes";
              ;;
@@ -33,7 +33,7 @@
          --disable-ipv6) has_ipv6="no"
              ;;
          --disable-wx) has_wx="no"
-@@ -1782,6 +1787,8 @@ for opt do
+@@ -1796,6 +1801,8 @@ for opt do
              ;;
          --disable-oss-audio) has_oss_audio="no"
              ;;
@@ -42,7 +42,7 @@
          --disable-x11-shm) has_x11_shm="no"
              ;;
          --disable-x11-xv) has_x11_xv="no"
-@@ -3053,6 +3060,7 @@ echo "CONFIG_AMR_WB_FT=$has_amr_wb" >> c
+@@ -3078,6 +3085,7 @@ echo "CONFIG_AMR_WB_FT=$has_amr_wb" >> c
  echo "DEBUGBUILD=$debuginfo" >> config.mak
  echo "GPROFBUILD=$gprof_build" >> config.mak
  echo "STATICBUILD=$static_build" >> config.mak
@@ -50,9 +50,9 @@
  
  echo "CONFIG_IPV6=$has_ipv6" >> config.mak
  if test "$has_ipv6" = "yes" ; then
---- gpac-0.5.0-svn5277/Makefile.0012~	2014-06-15 19:07:22.005965251 +0200
-+++ gpac-0.5.0-svn5277/Makefile	2014-06-15 19:07:22.025965439 +0200
-@@ -139,9 +139,6 @@ else
+--- gpac-0.5.0-svn5619/Makefile.0012~	2015-05-06 18:24:58.430007717 +0200
++++ gpac-0.5.0-svn5619/Makefile	2015-05-06 18:24:58.466007972 +0200
+@@ -185,9 +185,6 @@ else
  	$(INSTALL) $(INSTFLAGS) -m 755 bin/gcc/libgpac.$(DYN_LIB_SUFFIX).$(VERSION_SONAME) $(DESTDIR)$(prefix)/$(libdir)/libgpac.$(DYN_LIB_SUFFIX).$(VERSION_SONAME)
  	ln -sf libgpac.$(DYN_LIB_SUFFIX).$(VERSION_SONAME) $(DESTDIR)$(prefix)/$(libdir)/libgpac.so.$(VERSION_MAJOR)
  	ln -sf libgpac.$(DYN_LIB_SUFFIX).$(VERSION_SONAME) $(DESTDIR)$(prefix)/$(libdir)/libgpac.so
@@ -62,7 +62,7 @@
  endif
  endif
  
-@@ -158,7 +155,9 @@ ifeq ($(GPAC_ENST), yes)
+@@ -204,7 +201,9 @@ ifeq ($(GPAC_ENST), yes)
  	$(INSTALL) $(INSTFLAGS) -m 644 $(SRC_PATH)/include/gpac/enst/*.h "$(DESTDIR)$(prefix)/include/gpac/enst"
  endif
  	mkdir -p "$(DESTDIR)$(prefix)/$(libdir)"
@@ -72,9 +72,9 @@
  	$(MAKE) installdylib
  
  uninstall-lib:
---- gpac-0.5.0-svn5277/src/Makefile.0012~	2014-06-15 19:07:22.002631885 +0200
-+++ gpac-0.5.0-svn5277/src/Makefile	2014-06-15 19:09:05.553684116 +0200
-@@ -607,12 +607,16 @@ compositor: $(LIBGPAC_COMPOSITOR)
+--- gpac-0.5.0-svn5619/src/Makefile.0012~	2015-05-06 18:24:58.414007604 +0200
++++ gpac-0.5.0-svn5619/src/Makefile	2015-05-06 18:24:58.467007979 +0200
+@@ -606,12 +606,16 @@ compositor: $(LIBGPAC_COMPOSITOR)
  	@echo "OBJS $(OBJS)"
  	@echo "LIBS $(EXTRALIBS)"
  ifeq ($(CONFIG_DARWIN),yes)
