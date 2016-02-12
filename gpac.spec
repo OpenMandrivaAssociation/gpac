@@ -10,11 +10,10 @@
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	0.5.0
-%define	svnrel	5619
-Release:	%{?svnrel:0.svn%{svnrel}.}1
+Version:	0.5.2
+Release:	1
 
-Source0:	http://downloads.sourceforge.net/gpac/%{name}-%{version}%{?svnrel:-svn%{svnrel}}.tar.xz
+Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
 #PATCH-FIX-openSUSE i@marguerite.su - openSUSE only fix for sf#3574796
 Patch0:         gpac-0.5.0-smjs_call_prop_stub.patch
 #PATCH-FIX-UPSTREAM i@marguerite.su - enable osmozilla and osmo4_wx
@@ -42,7 +41,7 @@ Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
 Patch20:	gpac-0.5.0-compile.patch
 
-URL:		http://gpac.sourceforge.net/
+URL:		http://gpac.io/
 License:	LGPLv2+
 Group:		Video
 BuildRequires:	imagemagick
@@ -167,7 +166,7 @@ Requires:       %{name} = %{EVRD}
 Osmozilla is a GPAC plugin for Mozilla-based browsers.
 
 %prep
-%setup -q -n %{name}-%{version}%{?svnrel:-svn%{svnrel}}
+%setup -q -n %{name}-%{version}
 %apply_patches
 
 # Fix encoding warnings
@@ -180,9 +179,6 @@ cp -p doc/ipmpx_syntax.bt doc/ipmpx_syntax.bt.origine
 iconv -f ISO-8859-1 -t UTF8 doc/ipmpx_syntax.bt.origine > doc/ipmpx_syntax.bt
 touch -r doc/ipmpx_syntax.bt.origine doc/ipmpx_syntax.bt
 rm doc/ipmpx_syntax.bt.origine
-
-# Generate revision.h
-echo '#define GPAC_SVN_REVISION "%{svnrel}"' > ./include/gpac/revision.h
 
 %build
 ./configure	--verbose \
