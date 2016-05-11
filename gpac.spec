@@ -11,7 +11,7 @@
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	0.5.2
-Release:	1
+Release:	2
 
 Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
 #PATCH-FIX-openSUSE i@marguerite.su - openSUSE only fix for sf#3574796
@@ -79,7 +79,7 @@ BuildRequires:	wxgtku-devel
 BuildRequires:	firefox-devel
 # (Anssi 05/2011) Otherwise partially builds against older version of itself:
 BuildConflicts:	gpac-devel
-BuildConflicts:	gpac < 0.4.5-2 
+BuildConflicts:	gpac < 0.4.5-2
 
 %description
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
