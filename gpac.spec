@@ -10,36 +10,13 @@
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	0.5.2
-Release:	2
+Version:	0.6.1
+Release:	1
 
 Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
-#PATCH-FIX-openSUSE i@marguerite.su - openSUSE only fix for sf#3574796
-Patch0:         gpac-0.5.0-smjs_call_prop_stub.patch
-#PATCH-FIX-UPSTREAM i@marguerite.su - enable osmozilla and osmo4_wx
-Patch1:		gpac-0.5.0-enable_V4Studio.patch
-#PATCH-FIX-UPSTREAM wengxuetian@gmail.com - fix E: 64bit-portability-issue
-Patch3:		gpac-0.5.0-64bit-portability.patch
-#PATCH-FIX-OPENSUSE marguerite@opensuse.org - libpng include dir fix
-Patch4:		gpac-0.5.0-libpng-version-detection.patch
-#PATCH-FIX-UPSTREAM marguerite@opensuse.org - use system amrnb/amrwb
-Patch5:		gpac-0.5.0-system-amr.patch
-#PATCH-FIX-UPSTREAM marguerite@opensuse.org - no gpac.pc in devel package
-Patch6:		gpac-0.5.0-no-pc.patch
-#PATCH-FIX-UPSTREAM marguerite@opensuse.org - too many arguments for JS_GetParent
-Patch7:		gpac-0.5.0-js_getparent.patch
-#PATCH-FIX-UPSTREAM marguerite@opensuse.org - fix gf_isom_set_pixel_aspect_ratio
-# not available to the public
-Patch9:		gpac-0.5.0-x264-export.patch
-
 Patch10:	110_all_implicitdecls.patch
-Patch11:	gpac-0.5.0.svn5178-use-system-amr-library.patch
-Patch12:	gpac-0.5.0-build-fixes.patch
-Patch16:	gpac-0.5.0-respect_ldflags.patch
 Patch17:	gpac-0.5.0-link.patch
 Patch18:	210_all_system_libogg.patch
-Patch19:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
-Patch20:	gpac-0.5.0-compile.patch
 
 URL:		http://gpac.io/
 License:	LGPLv2+
@@ -75,7 +52,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(xv)
 BuildRequires:	subversion
 BuildRequires:	xvid-devel
-BuildRequires:	wxgtku-devel
+BuildRequires:	wxgtku3.0-devel
 BuildRequires:	firefox-devel
 # (Anssi 05/2011) Otherwise partially builds against older version of itself:
 BuildConflicts:	gpac-devel

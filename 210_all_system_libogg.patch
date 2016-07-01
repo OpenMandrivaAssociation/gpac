@@ -1,6 +1,6 @@
---- a/src/Makefile.old	2012-07-15 15:34:54.000000000 +0200
-+++ b/src/Makefile	2012-07-15 15:39:51.000000000 +0200
-@@ -92,9 +92,6 @@
+--- a/src/Makefile	2016-03-04 17:03:40.000000000 +0100
++++ b/src/Makefile	2016-03-22 07:18:35.964456340 +0100
+@@ -115,9 +115,6 @@
  ifeq ($(DISABLE_M2PS), no)
  LIBGPAC_MEDIATOOLS+=media_tools/mpeg2_ps.o
  endif
@@ -10,11 +10,11 @@
  ifeq ($(DISABLE_MCRYPT), no)
  LIBGPAC_MEDIATOOLS+=media_tools/ismacryp.o
  endif
-@@ -230,6 +227,15 @@
- endif
+@@ -235,6 +232,16 @@
+ EXTRALIBS+= -lrt
  endif
  
-+#6 - OGG support
++# - OGG support
 +ifeq ($(CONFIG_OGG), no)
 +else
 +LINKLIBS+= -logg
@@ -23,6 +23,7 @@
 +MEDIATOOLS_CFLAGS+=-I"$(LOCAL_INC_PATH)/ogg"
 +endif
 +endif
++
+ SRCS := $(OBJS:.o=.c) 
  
- ## libgpac compositor compilation options
- COMPOSITOR_CFLAGS=
+ all: lib
