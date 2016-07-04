@@ -1,10 +1,8 @@
-%define osmo	Osmo4
-
 # disable format string check, can't fix it for WxWidgets part
 %define Werror_cflags %{nil}
 
 # looks like no stable ABI => version is %major
-%define major	4
+%define major	6
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
@@ -17,7 +15,8 @@ Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
 Patch10:	110_all_implicitdecls.patch
 Patch17:	gpac-0.5.0-link.patch
 Patch18:	210_all_system_libogg.patch
-
+Patch19:	gpac-0.5.0-system-amr.patch
+Patch20:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
 URL:		http://gpac.io/
 License:	LGPLv2+
 Group:		Video
@@ -52,11 +51,12 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(xv)
 BuildRequires:	subversion
 BuildRequires:	xvid-devel
-BuildRequires:	wxgtku3.0-devel
 BuildRequires:	firefox-devel
 # (Anssi 05/2011) Otherwise partially builds against older version of itself:
 BuildConflicts:	gpac-devel
 BuildConflicts:	gpac < 0.4.5-2
+Obsoletes:	Osmo4
+Obsoletes:	gpac-browser-plugin
 
 %description
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
@@ -109,39 +109,6 @@ Development headers and libraries for gpac.
 This package is in tainted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
 
-%package -n	%{osmo}
-Summary:	Media player based on gpac
-Group:		Video
-
-%description -n %{osmo}
-Osmo4 is an MPEG-4 player with the following features:
-  * MPEG-4 Systems player:
-  * Optimized 2D graphics renderer compliant with the Complete2D Scene Graph
-    and Graphics profiles.
-  * Video and audio presentation achieved through plugins
-  * Multimedia player features:
-  * Timeline controls: play, pause, step.
-  * Graphics features: antialising, zoom and pan, scalable resizing of
-    rendering area, basic full screen support.
-  * Support for Advanced Text and Graphics extension of MPEG-4 Systems
-    under standardization.
-    * Frame export to JPG, PNG, B./modules/ffmpeg_in/ffmpeg_demux.c.rejMP.
-
-Osmo4 enables the use of MPEG-4 Systems in a vast aplication domain, among
-which:
-  * downloaded or streamed cartoons
-  * synchronized, interactive mixes of graphics, text, video and audio
-  * applications benefiting from MPEG-7 and MPEG-21 advances: meta-data,
-    encryption, watermarking, rights management
-
-%package	browser-plugin
-Summary:        Osmozilla is a GPAC plugin for Mozilla-based browsers
-Group:          Video
-Requires:       %{name} = %{EVRD}
-
-%description	browser-plugin
-Osmozilla is a GPAC plugin for Mozilla-based browsers.
-
 %prep
 %setup -q -n %{name}-%{version}
 %apply_patches
@@ -180,8 +147,7 @@ rm doc/ipmpx_syntax.bt.origine
 		--use-ogg=system \
 		--use-zlib=system \
 		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -fPIC -Ofast" \
-		--extra-ldflags="%{ldflags}" \
-		--xulsdk-path=`pkg-config --variable=sdkdir libxul` \
+		--extra-ldflags="%{ldflags}"
 
 %make all
 %make sggen 
@@ -189,12 +155,11 @@ rm doc/ipmpx_syntax.bt.origine
 %make -C applications/udptsseg
 
 %install
-%makeinstall_std install-lib
 
-install -m755 bin/gcc/nposmozilla.so -D \
-    %{buildroot}%{firefox_pluginsdir}/nposmozilla.so
-install -m755 bin/gcc/nposmozilla.xpt -D \
-    %{buildroot}%{firefox_pluginsdir}/nposmozilla.so
+# Makefile needs the pkgconfig dir to install the gpac.pc file otherwise it can't
+mkdir -p %{buildroot}%{_libdir}/pkgconfig
+
+%makeinstall_std install-lib
 
 # generated sggen binaries
 for i in MPEG4 SVG X3D; do
@@ -206,12 +171,10 @@ install -m755 bin/gcc/MP4* %{buildroot}%{_bindir}
 # udptsseg
 install -m755 bin/gcc/udptsseg %{buildroot}%{_bindir}
 
-# Osmo4
-install -m755 bin/gcc/Osmo4 %{buildroot}%{_bindir}
-
 # It used to be lower case, now it's upper... Let's support both
 ln -s MP42TS %{buildroot}%{_bindir}/mp42ts
 
+%if 0
 # menu
 mkdir -p %{buildroot}%{_datadir}/applications
 cat << EOF > %{buildroot}%{_datadir}/applications/%{osmo}.desktop
@@ -232,9 +195,10 @@ mkdir -p %{buildroot}%[_iconsdir}
 convert -size 32x32 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_iconsdir}/%{osmo}.png
 mkdir -p %{buildroot}%{_miconsdir}
 convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{osmo}.png
+%endif
 
 %files
-%doc AUTHORS BUGS Changelog COPYING README TODO
+%doc AUTHORS BUGS Changelog COPYING README.md TODO
 %doc doc/configuration.html
 %{_bindir}/DashCast
 %{_bindir}/MP4Box
@@ -249,20 +213,11 @@ convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{
 %{_datadir}/%{name}/
 %{_mandir}/man1/*
 
-%files -n %{osmo}
-%{_bindir}/Osmo4
-%{_datadir}/applications/%{osmo}.desktop
-%{_liconsdir}/%{osmo}.png
-%{_iconsdir}/%{osmo}.png
-%{_miconsdir}/%{osmo}.png
-
 %files -n %{libname}
 %{_libdir}/libgpac.so.%{major}*
 
 %files -n %{devname}
 %{_includedir}/%{name}
 %{_libdir}/libgpac.so
+%{_libdir}/libgpac_static.a
 %{_libdir}/pkgconfig/gpac.pc
-
-%files browser-plugin
-%{firefox_pluginsdir}/nposmozilla.*
