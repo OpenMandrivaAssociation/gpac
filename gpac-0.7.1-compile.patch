@@ -1,0 +1,66 @@
+diff -up gpac-0.7.1/applications/dashcast/video_encoder.c.omv~ gpac-0.7.1/applications/dashcast/video_encoder.c
+--- gpac-0.7.1/applications/dashcast/video_encoder.c.omv~	2018-04-21 20:03:22.501366028 +0200
++++ gpac-0.7.1/applications/dashcast/video_encoder.c	2018-04-21 20:03:42.951239511 +0200
+@@ -144,7 +144,7 @@ int dc_video_encoder_open(VideoOutputFil
+ 	}
+ 
+ 	//the global header gives access to the extradata (SPS/PPS)
+-	video_output_file->codec_ctx->flags |= CODEC_FLAG_GLOBAL_HEADER;
++	video_output_file->codec_ctx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+ 
+ 	video_output_file->vstream_idx = 0;//video_stream->index;
+ 
+diff -up gpac-0.7.1/modules/img_in/jp2_dec.c.omv~ gpac-0.7.1/modules/img_in/jp2_dec.c
+diff -up gpac-0.7.1/modules/img_in/Makefile.omv~ gpac-0.7.1/modules/img_in/Makefile
+--- gpac-0.7.1/modules/img_in/Makefile.omv~	2018-04-21 20:07:09.339962642 +0200
++++ gpac-0.7.1/modules/img_in/Makefile	2018-04-21 20:07:26.605855823 +0200
+@@ -30,7 +30,7 @@ ifeq ($(CONFIG_JP2), no)
+ else
+ OBJS+=jp2_dec.o
+ LINKLIBS+= -lopenjpeg
+-CFLAGS+=-DGPAC_HAS_JP2
++CFLAGS+=-DGPAC_HAS_JP2 -I/usr/include/openjpeg-2.2
+ #local openjpeg lib
+ ifeq ($(CONFIG_JP2), local)
+ NEED_LOCAL_LIB="yes"
+diff -up gpac-0.7.1/src/utils/downloader.c.omv~ gpac-0.7.1/src/utils/downloader.c
+--- gpac-0.7.1/src/utils/downloader.c.omv~	2018-04-21 20:00:39.591373906 +0200
++++ gpac-0.7.1/src/utils/downloader.c	2018-04-21 20:00:43.144351925 +0200
+@@ -392,7 +392,6 @@ static Bool init_ssl_lib() {
+ 	}
+ 	SSL_library_init();
+ 	SSL_load_error_strings();
+-	SSLeay_add_all_algorithms();
+ 	SSLeay_add_ssl_algorithms();
+ 	_ssl_is_initialized = GF_TRUE;
+ 	GF_LOG(GF_LOG_DEBUG, GF_LOG_NETWORK, ("[HTTPS] Initalization of SSL library complete.\n"));
+diff -up gpac-0.7.1/modules/ffmpeg_in/ffmpeg_decode.c.omv~ gpac-0.7.1/modules/ffmpeg_in/ffmpeg_decode.c
+--- gpac-0.7.1/modules/ffmpeg_in/ffmpeg_decode.c.omv~	2018-04-21 20:17:11.416237766 +0200
++++ gpac-0.7.1/modules/ffmpeg_in/ffmpeg_decode.c	2018-04-21 20:17:21.010178411 +0200
+@@ -49,7 +49,7 @@
+ static uint8_t * ffmpeg_realloc_buffer(uint8_t * oldBuffer, u32 size) {
+ 	uint8_t * buffer;
+ 	/* Size of buffer must be larger, see avcodec_decode_video2 documentation */
+-	u32 allocatedSz = sizeof( char ) * (FF_INPUT_BUFFER_PADDING_SIZE + size);
++	u32 allocatedSz = sizeof( char ) * (AV_INPUT_BUFFER_PADDING_SIZE + size);
+ 	if (oldBuffer)
+ 		gf_free(oldBuffer);
+ 	buffer = (uint8_t*)gf_malloc( allocatedSz );
+@@ -577,7 +577,7 @@ static GF_Err FFDEC_GetCapabilities(GF_B
+ 		capability->cap.valueInt = 1;
+ 		return GF_OK;
+ 	case GF_CODEC_PADDING_BYTES:
+-		capability->cap.valueInt = FF_INPUT_BUFFER_PADDING_SIZE;
++		capability->cap.valueInt = AV_INPUT_BUFFER_PADDING_SIZE;
+ 		return GF_OK;
+ 	case GF_CODEC_REORDER:
+ 		capability->cap.valueInt = 1;
+@@ -669,7 +669,7 @@ static GF_Err FFDEC_GetCapabilities(GF_B
+ 		break;
+ 
+ 	case GF_CODEC_PADDING_BYTES:
+-		capability->cap.valueInt = FF_INPUT_BUFFER_PADDING_SIZE;
++		capability->cap.valueInt = AV_INPUT_BUFFER_PADDING_SIZE;
+ 		break;
+ 	default:
+ 		capability->cap.valueInt = 0;

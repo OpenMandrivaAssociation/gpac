@@ -2,18 +2,18 @@
 %define Werror_cflags %{nil}
 
 # looks like no stable ABI => version is %major
-%define major	6
+%define major	7
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	0.6.1
+Version:	0.7.1
 Release:	1
 
 Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
+Patch1:		gpac-0.7.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
-Patch17:	gpac-0.5.0-link.patch
 Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-system-amr.patch
 Patch20:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
@@ -24,7 +24,6 @@ BuildRequires:	imagemagick
 BuildRequires:	a52dec-devel
 BuildRequires:	graphviz
 BuildRequires:	pkgconfig(alsa)
-BuildRequires:	pkgconfig(directfb)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glut)
@@ -33,12 +32,11 @@ BuildRequires:	faad2-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	pkgconfig(libavcodec)
 BuildRequires:	pkgconfig(libIDL-2.0)
-BuildRequires:	pkgconfig(libopenjpeg1)
+BuildRequires:	pkgconfig(libopenjp2)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(mad)
-BuildRequires:	pkgconfig(mozilla-plugin)
 BuildRequires:	pkgconfig(mozjs185)
 BuildRequires:	pkgconfig(opencore-amrnb)
 BuildRequires:	pkgconfig(opencore-amrwb)
@@ -141,7 +139,6 @@ rm doc/ipmpx_syntax.bt.origine
 		--enable-amr-wb \
 		--enable-amr \
 		--use-a52=system \
-		--use-openjpeg=system \
 		--use-theora=system \
 		--use-vorbis=system \
 		--use-ogg=system \
@@ -200,7 +197,6 @@ convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{
 %files
 %doc AUTHORS BUGS Changelog COPYING README.md TODO
 %doc doc/configuration.html
-%{_bindir}/DashCast
 %{_bindir}/MP4Box
 %{_bindir}/MP4Client
 %{_bindir}/MP42TS
