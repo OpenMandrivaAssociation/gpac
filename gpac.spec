@@ -109,7 +109,7 @@ technology which may be covered by software patents.
 
 %prep
 %setup -q -n %{name}-%{version}
-%apply_patches
+%autopatch -p1
 
 # Fix encoding warnings
 cp -p Changelog Changelog.origine
