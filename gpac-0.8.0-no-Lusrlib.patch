@@ -107,3 +107,21 @@ diff -up gpac-0.8.0/static.mak.omv~ gpac-0.8.0/static.mak
  ## OpenGL available
  ifeq ($(HAS_OPENGL),yes)
  EXTRALIBS+= $(OGL_LIBS)
+diff -up gpac-0.8.0/modules/xvid_dec/Makefile.omv~ gpac-0.8.0/modules/xvid_dec/Makefile
+--- gpac-0.8.0/modules/xvid_dec/Makefile.omv~	2020-02-19 22:30:18.188591236 +0100
++++ gpac-0.8.0/modules/xvid_dec/Makefile	2020-02-19 22:30:26.206591590 +0100
+@@ -32,14 +32,6 @@ ifeq ($(CONFIG_WIN32),yes)
+ endif
+ 
+ 
+-ifneq ($(prefix), /usr/local)
+-EXTRALIBS+=-L$(prefix)/lib
+-else
+-ifneq ($(prefix), /usr)
+-EXTRALIBS+=-L$(prefix)/lib
+-endif
+-endif
+-
+ all: $(LIB)
+ 
+ 
