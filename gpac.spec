@@ -10,7 +10,6 @@ Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	0.8.0
 Release:	1
-
 Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
 Patch0:		gpac-0.8.0-no-Lusrlib.patch
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
@@ -29,7 +28,7 @@ BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	faad2-devel
-BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libjpeg)
 BuildRequires:	pkgconfig(libavcodec)
 BuildRequires:	pkgconfig(libIDL-2.0)
 BuildRequires:	pkgconfig(libopenjp2)
@@ -80,7 +79,7 @@ descriptions (MPEG4<->VRML<->X3D converters, SWF->MPEG-4, etc...).
 This package is in tainted repository because it incorporates MPEG-4
 technology, covered by software patents.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	GPAC shared library
 Group:		System/Libraries
 Conflicts:	%{name} < 0.4.5-4
@@ -94,14 +93,14 @@ This package provides the GPAC shared library.
 This package is in tainted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development headers and library for gpac
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Provides:	gpac-devel = %{EVRD}
 Conflicts:	%{name}jor
 
-%description -n	%{devname}
+%description -n %{devname}
 Development headers and libraries for gpac.
 
 This package is in tainted repository because it incorporates MPEG-4
@@ -121,6 +120,7 @@ touch -r doc/ipmpx_syntax.bt.origine doc/ipmpx_syntax.bt
 rm doc/ipmpx_syntax.bt.origine
 
 %build
+%set_build_flags
 ./configure	--verbose \
 		--prefix=%{_prefix} \
 		--mandir=%{_mandir} \
@@ -147,10 +147,10 @@ sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc applications/mp4client/Makef
 # -I/usr/include is harmful...
 sed -i -e '/^Cflags:/d' *.pc
 
-%make all
-%make sggen 
-%make -C applications/generators/SVG
-%make -C applications/udptsseg
+%make_build all
+%make_build sggen
+%make_build -C applications/generators/SVG
+%make_build -C applications/udptsseg
 
 # Needs to be done again because Libs.private is added while running make
 sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc
@@ -160,7 +160,7 @@ sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc
 # Makefile needs the pkgconfig dir to install the gpac.pc file otherwise it can't
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 
-%makeinstall_std install-lib
+%make_install install-lib
 
 # generated sggen binaries
 for i in MPEG4 SVG X3D; do
