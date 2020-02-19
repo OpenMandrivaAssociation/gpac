@@ -1,0 +1,17 @@
+diff -up gpac-0.8.0/configure.omv~ gpac-0.8.0/configure
+--- gpac-0.8.0/configure.omv~	2020-02-19 21:40:00.514458172 +0100
++++ gpac-0.8.0/configure	2020-02-19 21:40:22.160459127 +0100
+@@ -2968,9 +2968,10 @@ fi
+ 
+ ldir=`pwd`
+ CFLAGS="$CFLAGS -DGPAC_HAVE_CONFIG_H -I\"$ldir\""
+-if test "$win32" = "no" ; then
+-    CFLAGS="$CFLAGS -fvisibility=\"hidden\""
+-fi
++# Too many missing GF_EXPORT statements for this to work
++#if test "$win32" = "no" ; then
++#    CFLAGS="$CFLAGS -fvisibility=\"hidden\""
++#fi
+ CXXFLAGS="$CXXFLAGS"
+ 
+ 

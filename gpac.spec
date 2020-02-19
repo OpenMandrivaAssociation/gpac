@@ -2,19 +2,19 @@
 %define Werror_cflags %{nil}
 
 # looks like no stable ABI => version is %major
-%define major	7
+%define major	8
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	0.7.1
-Release:	2
+Version:	0.8.0
+Release:	1
 
 Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
-Patch1:		gpac-0.7.1-compile.patch
+Patch0:		gpac-0.8.0-no-Lusrlib.patch
+Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch10:	110_all_implicitdecls.patch
-Patch18:	210_all_system_libogg.patch
 Patch19:	gpac-0.5.0-system-amr.patch
 Patch20:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
 URL:		http://gpac.io/
@@ -108,9 +108,7 @@ This package is in tainted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
 
 %prep
-%setup -q -n %{name}-%{version}
-%autopatch -p1
-
+%autosetup -p1 -n %{name}-%{version}
 # Fix encoding warnings
 cp -p Changelog Changelog.origine
 iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
@@ -145,11 +143,17 @@ rm doc/ipmpx_syntax.bt.origine
 		--use-zlib=system \
 		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -fPIC -Ofast" \
 		--extra-ldflags="%{ldflags}"
+sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc applications/mp4client/Makefile modules/jack/Makefile
+# -I/usr/include is harmful...
+sed -i -e '/^Cflags:/d' *.pc
 
 %make all
 %make sggen 
 %make -C applications/generators/SVG
 %make -C applications/udptsseg
+
+# Needs to be done again because Libs.private is added while running make
+sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc
 
 %install
 
@@ -194,9 +198,13 @@ mkdir -p %{buildroot}%{_miconsdir}
 convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{osmo}.png
 %endif
 
+# Why does this crap get installed?
+rm -rf %{buildroot}%{_includedir}/win32 %{buildroot}%{_includedir}/wince
+
 %files
 %doc AUTHORS BUGS Changelog COPYING README.md TODO
 %doc doc/configuration.html
+%{_bindir}/DashCast
 %{_bindir}/MP4Box
 %{_bindir}/MP4Client
 %{_bindir}/MP42TS

@@ -1,0 +1,81 @@
+diff -up gpac-0.8.0/configure.1~ gpac-0.8.0/configure
+--- gpac-0.8.0/configure.1~	2019-06-27 12:20:45.000000000 +0200
++++ gpac-0.8.0/configure	2020-02-19 21:39:40.439457287 +0100
+@@ -845,7 +845,7 @@ EOF
+             #try prefix (DC)
+             js_inc="$prefix/include/js"
+             js_flags="-DXP_UNIX -I$prefix/include/js"
+-            if docc $js_flags -L$prefix/lib -ljs -lpthread ; then
++            if docc $js_flags -ljs -lpthread ; then
+                 has_js="prefix"
+                 #dc added end
+             else
+@@ -906,7 +906,7 @@ EOF
+         #try prefix (DC)
+         js_inc="$prefix/include/js"
+         js_flags="-DXP_UNIX -I$prefix/include/js"
+-        if docc $js_flags -L$prefix/lib -ljs ; then
++        if docc $js_flags -ljs ; then
+             has_js="prefix"
+             #dc added end
+         elif test "$pkg_config" != "no"; then
+@@ -1097,7 +1097,7 @@ if test "$darwin" = "yes" ; then
+   ohevc_ldflags="-L/usr/lib -L/usr/local/lib -lopenhevc -lm -lpthread "
+ elif test "$cross_prefix" = "" ; then
+   ohevc_cflags="-I/usr/include -I/usr/local/include"
+-  ohevc_ldflags="-L/usr/lib -L/usr/local/lib -lopenhevc -lm -lpthread"
++  ohevc_ldflags="-lopenhevc -lm -lpthread"
+ else
+   ohevc_cflags="-I${prefix}include"
+   ohevc_ldflags="-lopenhevc -lm -lpthread"
+@@ -1129,7 +1129,7 @@ cat > $TMPC << EOF
+ int main( void ) { return 0; }
+ EOF
+ ft_cflags="-I$prefix/include "
+-ft_lflags="-L$prefix/lib -lfreetype"
++ft_lflags="-lfreetype"
+ if docc $CFLAGS_DIR $ft_cflags $ft_lflags $LDFLAGS ; then
+     has_ft="system"
+ fi
+@@ -1202,7 +1202,7 @@ if test "$cross_prefix" = "" ; then
+             fi
+         else
+             jpeg_cflags="-I$prefix/include"
+-            jpeg_lflags="-L$prefix/lib -ljpeg"
++            jpeg_lflags="-ljpeg"
+             if docc $jpeg_cflags $jpeg_lflags $LDFLAGS ; then
+                 has_jpeg="system"
+             fi
+@@ -1254,7 +1254,7 @@ int main( void ) { return 0; }
+ EOF
+ 
+ png_cflags="-I$prefix/include"
+-png_lflags="-L$prefix/lib -lpng -lz"
++png_lflags="-lpng -lz"
+ if docc $png_cflags $png_lflags $LDFLAGS ; then
+     has_png="system"
+ elif docc $LDFLAGS -lpng -lz ; then
+@@ -1339,7 +1339,7 @@ cat > $TMPC << EOF
+ int main( void ) { return 0; }
+ EOF
+ 
+-if docc -I$prefix/include -L$prefix/lib $LDFLAGS -lxvidcore -lpthread ; then
++if docc -I$prefix/include $LDFLAGS -lxvidcore -lpthread ; then
+     has_xvid="system"
+ elif docc $LDFLAGS -lxvidcore -lpthread ; then
+     has_xvid="system"
+@@ -1440,11 +1440,11 @@ int main(void) {
+ }
+ EOF
+ 
+-if docc -I$prefix/include -L$prefix/lib $ffmpeg_lflags $LDFLAGS ; then
++if docc -I$prefix/include $ffmpeg_lflags $LDFLAGS ; then
+     has_ffmpeg="system"
+     ffmpeg_cflags="-I$prefix/include"
+-    ffmpeg_lflags="-L$prefix/lib $ffmpeg_lflags"
+-    ffmpeg_lflags_dashcast="-L$prefix/lib $ffmpeg_lflags_dashcast"
++    ffmpeg_lflags="$ffmpeg_lflags"
++    ffmpeg_lflags_dashcast="$ffmpeg_lflags_dashcast"
+ elif docc $ffmpeg_lflags $LDFLAGS ; then
+     has_ffmpeg="system"
+ fi
