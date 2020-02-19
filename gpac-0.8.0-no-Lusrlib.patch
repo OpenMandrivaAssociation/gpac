@@ -1,6 +1,6 @@
 diff -up gpac-0.8.0/configure.1~ gpac-0.8.0/configure
 --- gpac-0.8.0/configure.1~	2019-06-27 12:20:45.000000000 +0200
-+++ gpac-0.8.0/configure	2020-02-19 21:39:40.439457287 +0100
++++ gpac-0.8.0/configure	2020-02-19 22:12:44.366544768 +0100
 @@ -845,7 +845,7 @@ EOF
              #try prefix (DC)
              js_inc="$prefix/include/js"
@@ -79,3 +79,31 @@ diff -up gpac-0.8.0/configure.1~ gpac-0.8.0/configure
  elif docc $ffmpeg_lflags $LDFLAGS ; then
      has_ffmpeg="system"
  fi
+@@ -3036,7 +3036,7 @@ if test "$bigendian" = "yes" ; then
+     echo "IS_BIGENDIAN=yes" >> config.mak
+     echo "#define GPAC_BIG_ENDIAN" >> $TMPH
+ fi
+-echo "EXTRALIBS=$extralibs" >> config.mak
++echo "EXTRALIBS=$(echo $extralibs |sed -e 's,-L/usr/lib ,,g')" >> config.mak
+ echo "VERSION=$version" >>config.mak
+ echo "VERSION_MAJOR=$version_major" >>config.mak
+ echo "VERSION_SONAME=$soname_version" >>config.mak
+diff -up gpac-0.8.0/static.mak.omv~ gpac-0.8.0/static.mak
+--- gpac-0.8.0/static.mak.omv~	2020-02-19 22:25:34.631578733 +0100
++++ gpac-0.8.0/static.mak	2020-02-19 22:25:57.582579745 +0100
+@@ -56,15 +56,6 @@ endif
+ ## libgpac compositor compilation options
+ COMPOSITOR_CFLAGS=
+ 
+-## Add prefix before every lib
+-ifneq ($(prefix), /usr/local)
+-EXTRALIBS+=-L$(prefix)/lib
+-else
+-ifneq ($(prefix), /usr)
+-EXTRALIBS+=-L$(prefix)/lib
+-endif
+-endif
+-
+ ## OpenGL available
+ ifeq ($(HAS_OPENGL),yes)
+ EXTRALIBS+= $(OGL_LIBS)

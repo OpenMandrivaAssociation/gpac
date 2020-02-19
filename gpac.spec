@@ -143,7 +143,7 @@ rm doc/ipmpx_syntax.bt.origine
 		--use-zlib=system \
 		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -fPIC -Ofast" \
 		--extra-ldflags="%{ldflags}"
-sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc applications/mp4client/Makefile modules/jack/Makefile
+sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' applications/mp4client/Makefile modules/jack/Makefile
 # -I/usr/include is harmful...
 sed -i -e '/^Cflags:/d' *.pc
 
@@ -152,11 +152,7 @@ sed -i -e '/^Cflags:/d' *.pc
 %make_build -C applications/generators/SVG
 %make_build -C applications/udptsseg
 
-# Needs to be done again because Libs.private is added while running make
-sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' *.pc
-
 %install
-
 # Makefile needs the pkgconfig dir to install the gpac.pc file otherwise it can't
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 
