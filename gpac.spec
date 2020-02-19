@@ -11,7 +11,7 @@ Summary:	MPEG-4 multimedia framework
 Version:	0.8.0
 Release:	1
 
-Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
+Source0:	https://github.com/gpac/gpac/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch1:		gpac-0.7.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
 Patch18:	210_all_system_libogg.patch
