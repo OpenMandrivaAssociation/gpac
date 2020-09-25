@@ -8,7 +8,7 @@
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	0.8.0
+Version:	0.8.1
 Release:	1
 Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
 Patch0:		gpac-0.8.0-no-Lusrlib.patch
