@@ -10,7 +10,7 @@ Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	0.8.1
 Release:	1
-Source0:	https://github.com/gpac/gpac/archive/v%{version}.tar.gz
+Source0:	https://github.com/gpac/gpac/archive/%{name}-%{version}.tar.gz
 Patch0:		gpac-0.8.0-no-Lusrlib.patch
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch10:	110_all_implicitdecls.patch
@@ -107,7 +107,7 @@ This package is in tainted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -p1
 # Fix encoding warnings
 cp -p Changelog Changelog.origine
 iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
