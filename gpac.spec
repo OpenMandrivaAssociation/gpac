@@ -2,20 +2,18 @@
 %define Werror_cflags %{nil}
 
 # looks like no stable ABI => version is %major
-%define major	8
+%define major	10
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	0.8.1
+Version:	1.0.1
 Release:	1
-Source0:	https://github.com/gpac/gpac/archive/%{name}-%{version}.tar.gz
-Patch0:		gpac-0.8.0-no-Lusrlib.patch
+Source0:	https://github.com/gpac/gpac/archive/refs/tags/v%{version}.tar.gz
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
+Patch2:		gpac-1.0.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
-Patch19:	gpac-0.5.0-system-amr.patch
-Patch20:	gpac-0.5.0-svn5277-add-missing-libxml2-cflags-and-libs.patch
 URL:		http://gpac.io/
 License:	LGPLv2+
 Group:		Video
@@ -114,11 +112,6 @@ iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
 touch -r Changelog.origine Changelog
 rm Changelog.origine
 
-cp -p doc/ipmpx_syntax.bt doc/ipmpx_syntax.bt.origine
-iconv -f ISO-8859-1 -t UTF8 doc/ipmpx_syntax.bt.origine > doc/ipmpx_syntax.bt
-touch -r doc/ipmpx_syntax.bt.origine doc/ipmpx_syntax.bt
-rm doc/ipmpx_syntax.bt.origine
-
 %build
 %set_build_flags
 ./configure	--verbose \
@@ -150,7 +143,6 @@ sed -i -e '/^Cflags:/d' *.pc
 %make_build all
 %make_build sggen
 %make_build -C applications/generators/SVG
-%make_build -C applications/udptsseg
 
 %install
 # Makefile needs the pkgconfig dir to install the gpac.pc file otherwise it can't
@@ -163,52 +155,22 @@ for i in MPEG4 SVG X3D; do
     install -m755 applications/generators/$i/${i}Gen \
     	%{buildroot}%{_bindir}
 done
-install -m755 bin/gcc/MP4* %{buildroot}%{_bindir}
-
-# udptsseg
-install -m755 bin/gcc/udptsseg %{buildroot}%{_bindir}
-
-# It used to be lower case, now it's upper... Let's support both
-ln -s MP42TS %{buildroot}%{_bindir}/mp42ts
-
-%if 0
-# menu
-mkdir -p %{buildroot}%{_datadir}/applications
-cat << EOF > %{buildroot}%{_datadir}/applications/%{osmo}.desktop
-[Desktop Entry]
-Name=%{osmo}
-Comment=MPEG-4 Media Player
-Exec=%{osmo}
-Icon=%{osmo}
-Terminal=false
-Type=Application
-Categories=AudioVideo;Video;
-EOF
-
-#icons
-mkdir -p %{buildroot}%{_liconsdir}
-convert -size 48x48 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_liconsdir}/%{osmo}.png
-mkdir -p %{buildroot}%[_iconsdir}
-convert -size 32x32 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_iconsdir}/%{osmo}.png
-mkdir -p %{buildroot}%{_miconsdir}
-convert -size 16x16 applications/osmo4_wx/osmo4.xpm %{buildroot}%{_miconsdir}/%{osmo}.png
-%endif
+install -m755 applications/generators/WebGLGen/WGLGen %{buildroot}%{_bindir}/
+install -m755 bin/gcc/MP4* bin/gcc/gpac %{buildroot}%{_bindir}
 
 # Why does this crap get installed?
 rm -rf %{buildroot}%{_includedir}/win32 %{buildroot}%{_includedir}/wince
 
 %files
-%doc AUTHORS BUGS Changelog COPYING README.md TODO
-%doc doc/configuration.html
-%{_bindir}/DashCast
+%{_bindir}/gpac
 %{_bindir}/MP4Box
 %{_bindir}/MP4Client
-%{_bindir}/MP42TS
 %{_bindir}/MPEG4Gen
 %{_bindir}/X3DGen
 %{_bindir}/SVGGen
-%{_bindir}/mp42ts
-%{_bindir}/udptsseg
+%{_bindir}/WGLGen
+%{_datadir}/applications/gpac.desktop
+%{_datadir}/pixmaps/gpac.png
 %{_libdir}/%{name}/
 %{_datadir}/%{name}/
 %{_mandir}/man1/*

@@ -1,0 +1,132 @@
+diff -up gpac-1.0.1/src/utils/math.c.omv~ gpac-1.0.1/src/utils/math.c
+--- gpac-1.0.1/src/utils/math.c.omv~	2021-09-01 01:42:21.048499670 +0200
++++ gpac-1.0.1/src/utils/math.c	2021-09-01 01:43:25.365638309 +0200
+@@ -1208,9 +1208,9 @@ GF_Vec gf_vec_cross_p(GF_Vec *v1, GF_Vec
+ 		res.z<<=16;
+ 		return res;
+ 	}
+-	res.x = gf_mulfix(v1.y, v2.z) - gf_mulfix(v2.y, v1.z);
+-	res.y = gf_mulfix(v2.x, v1.z) - gf_mulfix(v1.x, v2.z);
+-	res.z = gf_mulfix(v1.x, v2.y) - gf_mulfix(v2.x, v1.y);
++	res.x = gf_mulfix(v1->y, v2->z) - gf_mulfix(v2->y, v1->z);
++	res.y = gf_mulfix(v2->x, v1->z) - gf_mulfix(v1->x, v2->z);
++	res.z = gf_mulfix(v1->x, v2->y) - gf_mulfix(v2->x, v1->y);
+ 
+ #endif
+ 	return res;
+@@ -1967,8 +1967,8 @@ Bool gf_mx_inverse_4x4(GF_Matrix *mx)
+ 	}
+ 
+ 	/* choose pivot - or die */
+-	if (fabs(r3[1]) > fabs(r2[1])) SWAP_ROWS(r3, r2);
+-	if (fabs(r2[1]) > fabs(r1[1])) SWAP_ROWS(r2, r1);
++	if (abs(r3[1]) > abs(r2[1])) SWAP_ROWS(r3, r2);
++	if (abs(r2[1]) > abs(r1[1])) SWAP_ROWS(r2, r1);
+ 	if (r1[1]==0) return GF_FALSE;
+ 
+ 	/* eliminate second variable */
+@@ -2000,7 +2000,7 @@ Bool gf_mx_inverse_4x4(GF_Matrix *mx)
+ 	}
+ 
+ 	/* choose pivot - or die */
+-	if (fabs(r3[2]) > fabs(r2[2])) SWAP_ROWS(r3, r2);
++	if (abs(r3[2]) > abs(r2[2])) SWAP_ROWS(r3, r2);
+ 	if (r2[2]==0) return GF_FALSE;
+ 
+ 	/* eliminate third variable */
+@@ -2106,7 +2106,7 @@ Bool gf_plane_intersect_plane(GF_Plane *
+ 	Fixed fn01 = gf_vec_dot(plane->normal, with->normal);
+ 	Fixed fn11 = gf_vec_len(with->normal);
+ 	Fixed det = gf_mulfix(fn00,fn11) - gf_mulfix(fn01,fn01);
+-	if (fabs(det) > FIX_EPSILON) {
++	if (abs(det) > FIX_EPSILON) {
+ 		Fixed fc0, fc1;
+ 		GF_Vec v1, v2;
+ 		fc0 = gf_divfix( gf_mulfix(fn11, -plane->d) + gf_mulfix(fn01, with->d) , det);
+diff -up gpac-1.0.1/src/utils/os_file.c.omv~ gpac-1.0.1/src/utils/os_file.c
+--- gpac-1.0.1/src/utils/os_file.c.omv~	2021-09-01 01:40:50.133983792 +0200
++++ gpac-1.0.1/src/utils/os_file.c	2021-09-01 01:40:58.849033643 +0200
+@@ -52,6 +52,7 @@
+ 
+ #endif
+ 
++#undef printf
+ 
+ GF_EXPORT
+ GF_Err gf_rmdir(const char *DirPathName)
+diff -up gpac-1.0.1/src/utils/Remotery.c.omv~ gpac-1.0.1/src/utils/Remotery.c
+--- gpac-1.0.1/src/utils/Remotery.c.omv~	2021-09-01 01:38:26.965165884 +0200
++++ gpac-1.0.1/src/utils/Remotery.c	2021-09-01 01:43:41.005675584 +0200
+@@ -2367,11 +2367,11 @@ static void TCPSocket_Close(TCPSocket* t
+             // Keep receiving until the peer closes the connection
+             int total = 0;
+             char temp_buf[128];
+-            while (result > 0)
+-            {
++            
++            do {
+                 result = (int)recv(tcp_socket->socket, temp_buf, sizeof(temp_buf), 0);
+                 total += result;
+-            }
++            } while (result > 0);
+         }
+ 
+         // Close the socket and issue a network shutdown request
+diff -up gpac-1.0.1/src/utils/zutil.h.omv~ gpac-1.0.1/src/utils/zutil.h
+--- gpac-1.0.1/src/utils/zutil.h.omv~	2021-09-01 01:41:21.050160667 +0200
++++ gpac-1.0.1/src/utils/zutil.h	2021-09-01 01:50:06.614925243 +0200
+@@ -48,6 +48,8 @@ extern int errno;
+ #endif
+ /* compile with -Dlocal if your debugger can't find static symbols */
+ 
++#define FAR /* T */
++
+ typedef unsigned char  uch;
+ typedef uch FAR uchf;
+ typedef unsigned short ush;
+@@ -225,21 +227,9 @@ typedef int ptrdiff_t;
+ #if defined(STDC) && !defined(HAVE_MEMCPY) && !defined(NO_MEMCPY)
+ #  define HAVE_MEMCPY
+ #endif
+-#ifdef HAVE_MEMCPY
+-#  ifdef SMALL_MEDIUM /* MSDOS small or medium model */
+-#    define zmemcpy _fmemcpy
+-#    define zmemcmp _fmemcmp
+-#    define zmemzero(dest, len) _fmemset(dest, 0, len)
+-#  else
+-#    define zmemcpy memcpy
+-#    define zmemcmp memcmp
+-#    define zmemzero(dest, len) memset(dest, 0, len)
+-#  endif
+-#else
+-extern void zmemcpy  OF((Bytef* dest, const Bytef* source, uInt len));
+-extern int  zmemcmp  OF((const Bytef* s1, const Bytef* s2, uInt len));
+-extern void zmemzero OF((Bytef* dest, uInt len));
+-#endif
++#define zmemcpy memcpy
++#define zmemcmp memcmp
++#define zmemzero(dest, len) memset(dest, 0, len)
+ 
+ /* Diagnostic functions */
+ #ifdef DEBUG
+diff -up gpac-1.0.1/applications/generators/SVG/Makefile.omv~ gpac-1.0.1/applications/generators/SVG/Makefile
+--- gpac-1.0.1/applications/generators/SVG/Makefile.omv~	2021-09-01 01:59:58.476529617 +0200
++++ gpac-1.0.1/applications/generators/SVG/Makefile	2021-09-01 02:02:01.649121292 +0200
+@@ -2,7 +2,7 @@ include ../../../config.mak
+ 
+ vpath %.c $(SRC_PATH)/applications/generators/SVG
+ 
+-CFLAGS= $(OPTFLAGS) -I"$(SRC_PATH)/include"
++CFLAGS= $(OPTFLAGS) -I"$(SRC_PATH)/include" $(shell pkg-config --cflags libxml-2.0)
+ 
+ ifeq ($(DEBUGBUILD),yes)
+ CFLAGS+=-g
+@@ -18,7 +18,7 @@ endif
+ OBJS= html.o laser.o main.o v1.o v2.o v3.o
+ 
+ CFLAGS+=-g
+-LDFLAGS+=-g
++LDFLAGS+=-g $(shell pkg-config --libs libxml-2.0)
+ CFLAGS+=$(XML2_CFLAGS)
+ 
+ ifeq ($(CONFIG_WIN32),yes)
