@@ -6,13 +6,16 @@
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
+%define snapshot 20220117
+
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	1.0.1
-Release:	1
-Source0:	https://github.com/gpac/gpac/archive/refs/tags/v%{version}.tar.gz
+Version:	1.0.2
+Release:	%{?snapshot:0.%{snapshot}.}1
+Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
+Patch3:		gpac-1.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
 URL:		http://gpac.io/
 License:	LGPLv2+
@@ -105,7 +108,7 @@ This package is in tainted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
 
 %prep
-%autosetup -p1
+%autosetup -p1 %{?snapshot:-n gpac-master}
 # Fix encoding warnings
 cp -p Changelog Changelog.origine
 iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
@@ -170,7 +173,7 @@ rm -rf %{buildroot}%{_includedir}/win32 %{buildroot}%{_includedir}/wince
 %{_bindir}/SVGGen
 %{_bindir}/WGLGen
 %{_datadir}/applications/gpac.desktop
-%{_datadir}/pixmaps/gpac.png
+%{_datadir}/icons/*/*/*/gpac.png
 %{_libdir}/%{name}/
 %{_datadir}/%{name}/
 %{_mandir}/man1/*

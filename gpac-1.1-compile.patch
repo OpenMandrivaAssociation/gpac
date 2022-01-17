@@ -1,0 +1,12 @@
+diff -up gpac-master/include/gpac/maths.h.omv~ gpac-master/include/gpac/maths.h
+--- gpac-master/include/gpac/maths.h.omv~	2022-01-17 16:39:56.273413575 +0100
++++ gpac-master/include/gpac/maths.h	2022-01-17 16:40:24.314549401 +0100
+@@ -72,7 +72,7 @@ typedef s32 Fixed;
+ #define FIX_ONE			0x10000L
+ #define INT2FIX(v)		((Fixed)( ((s32) (v) ) << 16))
+ #define FLT2FIX(v)		((Fixed) ((v) * FIX_ONE))
+-#define FIX2INT(v)		((s32)(((v)+((FIX_ONE>>1)))>>16))
++#define FIX2INT(v)		((s32)(((int)((v)+((FIX_ONE>>1))))>>16))
+ #define FIX2FLT(v)		((Float)( ((Float)(v)) / ((Float) FIX_ONE)))
+ #define FIX_EPSILON		2
+ #define FIX_MAX			0x7FFFFFFF
