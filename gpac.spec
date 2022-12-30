@@ -6,13 +6,13 @@
 %define libname	%mklibname %{name} %{major}
 %define devname	%mklibname %{name} -d
 
-%define snapshot 20220117
+#define snapshot 20220117
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	2.2.0
 Release:	%{?snapshot:1.%{snapshot}.}1
-Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz
+Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}/%{name}-%{version}}.tar.gz
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
