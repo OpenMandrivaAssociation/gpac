@@ -110,10 +110,10 @@ technology which may be covered by software patents.
 %prep
 %autosetup -p1 %{?snapshot:-n gpac-master}
 # Fix encoding warnings
-cp -p Changelog Changelog.origine
-iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
-touch -r Changelog.origine Changelog
-rm Changelog.origine
+#cp -p Changelog Changelog.origine
+#iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
+#touch -r Changelog.origine Changelog
+#rm Changelog.origine
 
 %build
 %set_build_flags
