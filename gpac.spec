@@ -30,7 +30,7 @@ BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	faad2-devel
 BuildRequires:	pkgconfig(libjpeg)
-BuildRequires:	pkgconfig(libavcodec)
+BuildRequires:	pkgconfig(ffmpeg)
 BuildRequires:	pkgconfig(libIDL-2.0)
 BuildRequires:	pkgconfig(libopenjp2)
 BuildRequires:	pkgconfig(libpng)
