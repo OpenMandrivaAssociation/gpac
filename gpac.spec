@@ -53,8 +53,8 @@ BuildRequires:	firefox-devel
 # (Anssi 05/2011) Otherwise partially builds against older version of itself:
 BuildConflicts:	gpac-devel
 BuildConflicts:	gpac < 0.4.5-2
-# Obsoletes:	Osmo4
-# Obsoletes:	gpac-browser-plugin
+Obsoletes:	Osmo4
+Obsoletes:	gpac-browser-plugin
 
 %description
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
