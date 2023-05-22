@@ -23,6 +23,7 @@ Group:		Video
 BuildRequires:	imagemagick
 BuildRequires:	a52dec-devel
 BuildRequires:	graphviz
+BuildRequires:	locales-extra-charsets
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(glu)
