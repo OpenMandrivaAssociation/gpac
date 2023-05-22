@@ -124,6 +124,7 @@ rm Changelog.origine
 		--libdir=%{_lib} \
 		--X11-path=%{_prefix} \
 		--use-js=no \
+		--disable-qjs \
 		--use-ffmpeg=system \
 		--enable-depth \
 		--enable-jack \
