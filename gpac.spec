@@ -50,6 +50,7 @@ BuildRequires:	pkgconfig(xv)
 BuildRequires:	subversion
 BuildRequires:	xvid-devel
 BuildRequires:	firefox-devel
+BuildRequires:	locales-extra-charsets
 # (Anssi 05/2011) Otherwise partially builds against older version of itself:
 BuildConflicts:	gpac-devel
 BuildConflicts:	gpac < 0.4.5-2
