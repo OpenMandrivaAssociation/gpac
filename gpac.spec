@@ -1,21 +1,21 @@
 # disable format string check, can't fix it for WxWidgets part
 %define Werror_cflags %{nil}
 
-# looks like no stable ABI => version is %major
-%define major	10
-%define libname	%mklibname %{name} %{major}
+%define major	12
+%define libname	%mklibname %{name}
 %define devname	%mklibname %{name} -d
 
-%define snapshot 20220117
+#define snapshot 20220117
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	2.2.0
-Release:	%{?snapshot:1.%{snapshot}.}2
+Version:	2.2.1
+Release:	%{?snapshot:0.%{snapshot}.}1
 Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
+Patch4:		https://github.com/gpac/gpac/commit/ba14e34dd7a3c4cef5a56962898e9f863dd4b4f3.patch
 Patch10:	110_all_implicitdecls.patch
 URL:		http://gpac.io/
 License:	LGPLv2+
@@ -122,7 +122,6 @@ rm Changelog.origine
 		--mandir=%{_mandir} \
 		--libdir=%{_lib} \
 		--X11-path=%{_prefix} \
-		--use-js=no \
 		--use-ffmpeg=system \
 		--enable-depth \
 		--enable-jack \
@@ -139,7 +138,7 @@ rm Changelog.origine
 		--use-zlib=system \
 		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -fPIC -Ofast" \
 		--extra-ldflags="%{ldflags}"
-sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' applications/mp4client/Makefile modules/jack/Makefile
+#sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' applications/mp4client/Makefile modules/jack/Makefile
 # -I/usr/include is harmful...
 sed -i -e '/^Cflags:/d' *.pc
 
@@ -167,7 +166,6 @@ rm -rf %{buildroot}%{_includedir}/win32 %{buildroot}%{_includedir}/wince
 %files
 %{_bindir}/gpac
 %{_bindir}/MP4Box
-%{_bindir}/MP4Client
 %{_bindir}/MPEG4Gen
 %{_bindir}/X3DGen
 %{_bindir}/SVGGen
