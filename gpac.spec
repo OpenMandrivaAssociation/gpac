@@ -1,21 +1,25 @@
 # disable format string check, can't fix it for WxWidgets part
 %define Werror_cflags %{nil}
 
+# gpac uses "printf" as the name of a struct member -- therefore doesn't
+# like glibc's `#define printf ...` with -DFORTIFY_SOURCE=2 at all...
+%undefine _fortify_cflags
+
 %define major	12
-%define libname	%mklibname %{name}
+%define oldlibname	%mklibname 12
+%define libname	%mklibname
 %define devname	%mklibname %{name} -d
 
-#define snapshot 20220117
+%define snapshot 20240408
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	2.2.1
-Release:	%{?snapshot:0.%{snapshot}.}3
-Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz
+Version:	2.2.2
+Release:	%{?snapshot:0.%{snapshot}.}1
+Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz%{?snapshot:#/%{name}-%{snapshot}.tar.gz}
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
-Patch4:		https://github.com/gpac/gpac/commit/ba14e34dd7a3c4cef5a56962898e9f863dd4b4f3.patch
 Patch10:	110_all_implicitdecls.patch
 URL:		http://gpac.io/
 License:	LGPLv2+
@@ -84,7 +88,7 @@ technology, covered by software patents.
 %package -n %{libname}
 Summary:	GPAC shared library
 Group:		System/Libraries
-Conflicts:	%{name} < 0.4.5-4
+%rename %{oldlibname}
 
 %description -n %{libname}
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
