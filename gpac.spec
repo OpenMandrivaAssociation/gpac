@@ -7,7 +7,7 @@
 
 %define major	12
 %define oldlibname	%mklibname 12
-%define libname	%mklibname
+%define libname	%mklibname %{name}
 %define devname	%mklibname %{name} -d
 
 %define snapshot 20240408
