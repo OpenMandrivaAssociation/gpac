@@ -15,7 +15,7 @@
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
 Version:	2.2.2
-Release:	%{?snapshot:0.%{snapshot}.}1
+Release:	%{?snapshot:0.%{snapshot}.}2
 Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz%{?snapshot:#/%{name}-%{snapshot}.tar.gz}
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
@@ -89,6 +89,7 @@ technology, covered by software patents.
 Summary:	GPAC shared library
 Group:		System/Libraries
 %rename %{oldlibname}
+Obsoletes: %{_lib}__1_
 
 %description -n %{libname}
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
