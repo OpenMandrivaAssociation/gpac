@@ -21,7 +21,7 @@ Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
-URL:		http://gpac.io/
+URL:		https://gpac.io/
 License:	LGPLv2+
 Group:		Video
 BuildRequires:	imagemagick
