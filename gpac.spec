@@ -10,17 +10,18 @@
 %define libname	%mklibname %{name}
 %define devname	%mklibname %{name} -d
 
-%define snapshot 20240408
+#define snapshot 20240408
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	2.2.2
+Version:	2.4.0
 Release:	%{?snapshot:0.%{snapshot}.}3
-Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz%{?snapshot:#/%{name}-%{snapshot}.tar.gz}
+Source0:	https://github.com/gpac/gpac/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
+Patch11:	https://patch-diff.githubusercontent.com/raw/gpac/gpac/pull/2994.patch
 URL:		https://gpac.io/
 License:	LGPLv2+
 Group:		Video
