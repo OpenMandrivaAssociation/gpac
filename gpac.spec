@@ -14,7 +14,7 @@
 
 Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	2.2.2
+Version:	2.4.0
 Release:	%{?snapshot:0.%{snapshot}.}3
 Source0:	https://github.com/gpac/gpac/archive/refs/%{?snapshot:heads/master}%{!?snapshot:tags/v%{version}}.tar.gz%{?snapshot:#/%{name}-%{snapshot}.tar.gz}
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
