@@ -22,6 +22,7 @@ Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
 Patch10:	110_all_implicitdecls.patch
 Patch11:	https://patch-diff.githubusercontent.com/raw/gpac/gpac/pull/2994.patch
+Patch12:	https://patch-diff.githubusercontent.com/raw/gpac/gpac/pull/3317.patch
 URL:		https://gpac.io/
 License:	LGPLv2+
 Group:		Video
