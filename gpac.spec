@@ -20,6 +20,7 @@ Source0:	https://github.com/gpac/gpac/archive/v%{version}/%{name}-%{version}.tar
 Patch1:		gpac-0.8.0-no-visibility-hidden.patch
 Patch2:		gpac-1.0.1-compile.patch
 Patch3:		gpac-1.1-compile.patch
+Patch5:		https://github.com/gpac/gpac/pull/3317.patch
 Patch10:	110_all_implicitdecls.patch
 Patch11:	https://patch-diff.githubusercontent.com/raw/gpac/gpac/pull/2994.patch
 URL:		https://gpac.io/
