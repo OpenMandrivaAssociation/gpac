@@ -1,0 +1,21 @@
+diff -rupN gpac-26.02.0.old/applications/generators/SVG/svggen.h gpac-26.02.0/applications/generators/SVG/svggen.h
+--- gpac-26.02.0.old/applications/generators/SVG/svggen.h	2026-04-09 16:01:44.272508119 +0200
++++ gpac-26.02.0/applications/generators/SVG/svggen.h	2026-04-09 16:04:34.390735236 +0200
+@@ -165,7 +165,7 @@ static char *timing[] = {
+ };
+ 
+ /* Sync */
+-static char *sync[] = {
++static char *sync_mode[] = {
+ 	"syncBehavior", "syncBehaviorDefault", "syncTolerance", "syncToleranceDefault", "syncMaster", "syncReference"
+ };
+ 
+@@ -193,7 +193,7 @@ static _atts generic_attributes[] = {
+ 	{ 12, focus },
+ 	{ 7, xlink },
+ 	{ 11, timing },
+-	{ 6, sync },
++	{ 6, sync_mode },
+ 	{ 13, anim },
+ 	{ 5, conditional}
+ };

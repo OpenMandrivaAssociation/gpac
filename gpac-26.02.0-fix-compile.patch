@@ -1,0 +1,81 @@
+diff -rupN gpac-26.02.0.old/applications/generators/SVG/Makefile gpac-26.02.0/applications/generators/SVG/Makefile
+--- gpac-26.02.0.old/applications/generators/SVG/Makefile	2026-02-05 14:26:28.000000000 +0100
++++ gpac-26.02.0/applications/generators/SVG/Makefile	2026-04-06 15:38:39.351490931 +0200
+@@ -2,7 +2,7 @@ include ../../../config.mak
+ 
+ vpath %.c $(SRC_PATH)/applications/generators/SVG
+ 
+-CFLAGS= $(OPTFLAGS) -I"$(SRC_PATH)/include"
++CFLAGS= $(OPTFLAGS) -I"$(SRC_PATH)/include" $(shell pkg-config --cflags libxml-2.0)
+ 
+ ifeq ($(DEBUGBUILD),yes)
+ CFLAGS+=-g
+@@ -18,7 +18,7 @@ endif
+ OBJS= html.o laser.o main.o v1.o v2.o v3.o
+ 
+ CFLAGS+=-g
+-LDFLAGS+=-g
++LDFLAGS+=-g $(shell pkg-config --libs libxml-2.0)
+ CFLAGS+=$(XML2_CFLAGS)
+ 
+ ifeq ($(CONFIG_WIN32),yes)
+diff -rupN gpac-26.02.0.old/include/gpac/maths.h gpac-26.02.0/include/gpac/maths.h
+--- gpac-26.02.0.old/include/gpac/maths.h	2026-02-05 14:26:28.000000000 +0100
++++ gpac-26.02.0/include/gpac/maths.h	2026-04-06 15:39:37.906243378 +0200
+@@ -72,7 +72,7 @@ typedef s32 Fixed;
+ #define FIX_ONE			0x10000L
+ #define INT2FIX(v)		((Fixed)( ((s32) (v) ) << 16))
+ #define FLT2FIX(v)		((Fixed) ((v) * FIX_ONE))
+-#define FIX2INT(v)		((s32)(((v)+((FIX_ONE>>1)))>>16))
++#define FIX2INT(v)		((s32)(((int)((v)+((FIX_ONE>>1))))>>16))
+ #define FIX2FLT(v)		((Float)( ((Float)(v)) / ((Float) FIX_ONE)))
+ #define FIX_EPSILON		2
+ #define FIX_MAX			0x7FFFFFFF
+diff -rupN gpac-26.02.0.old/src/utils/os_file.c gpac-26.02.0/src/utils/os_file.c
+--- gpac-26.02.0.old/src/utils/os_file.c	2026-02-05 14:26:28.000000000 +0100
++++ gpac-26.02.0/src/utils/os_file.c	2026-04-06 15:36:28.614712972 +0200
+@@ -52,6 +52,7 @@
+ 
+ #endif
+ 
++#undef printf
+ 
+ GF_EXPORT
+ GF_Err gf_rmdir(const char *DirPathName)
+diff -rupN gpac-26.02.0.old/src/utils/zutil.h gpac-26.02.0/src/utils/zutil.h
+--- gpac-26.02.0.old/src/utils/zutil.h	2026-02-05 14:26:28.000000000 +0100
++++ gpac-26.02.0/src/utils/zutil.h	2026-04-06 15:37:41.710470593 +0200
+@@ -48,6 +48,8 @@ extern int errno;
+ #endif
+ /* compile with -Dlocal if your debugger can't find static symbols */
+ 
++#define FAR /* T */
++
+ typedef unsigned char  uch;
+ typedef uch FAR uchf;
+ typedef unsigned short ush;
+@@ -225,21 +227,9 @@ typedef int ptrdiff_t;
+ #if defined(STDC) && !defined(HAVE_MEMCPY) && !defined(NO_MEMCPY)
+ #  define HAVE_MEMCPY
+ #endif
+-#ifdef HAVE_MEMCPY
+-#  ifdef SMALL_MEDIUM /* MSDOS small or medium model */
+-#    define zmemcpy _fmemcpy
+-#    define zmemcmp _fmemcmp
+-#    define zmemzero(dest, len) _fmemset(dest, 0, len)
+-#  else
+-#    define zmemcpy memcpy
+-#    define zmemcmp memcmp
+-#    define zmemzero(dest, len) memset(dest, 0, len)
+-#  endif
+-#else
+-extern void zmemcpy  OF((Bytef* dest, const Bytef* source, uInt len));
+-extern int  zmemcmp  OF((const Bytef* s1, const Bytef* s2, uInt len));
+-extern void zmemzero OF((Bytef* dest, uInt len));
+-#endif
++#define zmemcpy memcpy
++#define zmemcmp memcmp
++#define zmemzero(dest, len) memset(dest, 0, len)
+ 
+ /* Diagnostic functions */
+ #ifdef DEBUG

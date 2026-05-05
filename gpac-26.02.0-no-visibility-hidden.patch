@@ -1,0 +1,22 @@
+diff -rupN gpac-26.02.0.old/config.log gpac-26.02.0/config.log
+--- gpac-26.02.0.old/config.log	1970-01-01 01:00:00.000000000 +0100
++++ gpac-26.02.0/config.log	2026-04-06 15:29:35.780607209 +0200
+@@ -0,0 +1 @@
++Logs for GPAC configure --help
+diff -rupN gpac-26.02.0.old/configure gpac-26.02.0/configure
+--- gpac-26.02.0.old/configure	2026-02-05 14:26:28.000000000 +0100
++++ gpac-26.02.0/configure	2026-04-06 15:32:19.609164741 +0200
+@@ -2657,9 +2657,10 @@ fi
+ 
+ ldir=`pwd`
+ CFLAGS="$CFLAGS -DGPAC_HAVE_CONFIG_H -I\"$ldir\""
+-if test "$win32" = "no" ; then
+-    CFLAGS="$CFLAGS -fvisibility=\"hidden\""
+-fi
++# Too many missing GF_EXPORT statements for this to work
++#if test "$win32" = "no" ; then
++#    CFLAGS="$CFLAGS -fvisibility=\"hidden\""
++#fi
+ CXXFLAGS="$CXXFLAGS"
+ 
+ 

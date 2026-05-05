@@ -1,11 +1,11 @@
-Index: gpac/applications/generators/SVG/svggen.h
-===================================================================
---- gpac.orig/applications/generators/SVG/svggen.h
-+++ gpac/applications/generators/SVG/svggen.h
-@@ -107,6 +107,17 @@ typedef struct {
+diff -rupN gpac-26.02.0.old/applications/generators/SVG/svggen.h gpac-26.02.0/applications/generators/SVG/svggen.h
+--- gpac-26.02.0.old/applications/generators/SVG/svggen.h	2026-02-05 14:26:28.000000000 +0100
++++ gpac-26.02.0/applications/generators/SVG/svggen.h	2026-04-06 15:43:25.313949134 +0200
+@@ -107,7 +107,17 @@ typedef struct {
+ 	GF_List *attrgrps;
  } SVGGenAttrGrp;
  
- 
+-
 +SVGGenAttribute *findAttribute(SVGGenElement *e, char *name);
 +void generateAttributes(FILE *output, GF_List *attributes, Bool inDefine);
 +void generateSVGCode_V1(GF_List *svg_elements);

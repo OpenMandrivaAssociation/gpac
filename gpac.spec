@@ -1,48 +1,57 @@
-# disable format string check, can't fix it for WxWidgets part
-%define Werror_cflags %{nil}
+# Test suite requires external data: see  README.md file
+%bcond_with check
 
-# gpac uses "printf" as the name of a struct member -- therefore doesn't
-# like glibc's `#define printf ...` with -DFORTIFY_SOURCE=2 at all...
-%undefine _fortify_cflags
-
-%define major	12
-%define oldlibname	%mklibname 12
+%define major	16
 %define libname	%mklibname %{name}
 %define devname	%mklibname %{name} -d
 
 #define snapshot 20240408
 
-Name:	 	gpac
 Summary:	MPEG-4 multimedia framework
-Version:	2.4.0
-Release:	%{?snapshot:0.%{snapshot}.}6
-Source0:	https://github.com/gpac/gpac/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch1:		gpac-0.8.0-no-visibility-hidden.patch
-Patch2:		gpac-1.0.1-compile.patch
-Patch3:		gpac-1.1-compile.patch
-Patch5:		https://github.com/gpac/gpac/pull/3317.patch
-Patch10:	110_all_implicitdecls.patch
-Patch11:	https://patch-diff.githubusercontent.com/raw/gpac/gpac/pull/2994.patch
-URL:		https://gpac.io/
-License:	LGPLv2+
+Name:	 	gpac
+Version:		26.02.0
+Release:	%{?snapshot:0.%{snapshot}.}1
+License:		LGPLv2+
 Group:		Video
+Url:		https://gpac.io/
+Source0:	https://github.com/gpac/gpac/archive/v%{version}/%{name}-%{version}.tar.gz
+Source100:	%{name}.rpmlintrc
+Patch0:		gpac-26.02.0-no-visibility-hidden.patch
+Patch1:		gpac-26.02.0-fix-compile.patch
+Patch2:		gpac-26.02.0-fix-all-implicit-decls.patch
+Patch3:		gpac-26.02.0-drop-rpath.patch
+Patch4:		gpac-26.02.0-fix-redefinition-error.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
-BuildRequires:	slibtool
-BuildRequires:	make
-BuildRequires:	imagemagick
-BuildRequires:	a52dec-devel
+BuildRequires:	doxygen
+BuildRequires:	git
 BuildRequires:	graphviz
+BuildRequires:	imagemagick
+BuildRequires:	libtool-base
+BuildRequires:	locales-extra-charsets
+BuildRequires:	make
+BuildRequires:	slibtool
+BuildRequires:	a52dec-devel
+BuildRequires:	faad2-devel
+BuildRequires:	firefox-devel
+BuildRequires:	xvid-devel
 BuildRequires:	pkgconfig(alsa)
+BuildRequires:	pkgconfig(caca)
+BuildRequires:	pkgconfig(directfb)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(jack)
-BuildRequires:	faad2-devel
-BuildRequires:	pkgconfig(libjpeg)
+BuildRequires:	pkgconfig(hidapi-hidraw)
 BuildRequires:	pkgconfig(libavcodec)
+BuildRequires:	pkgconfig(libavfilter)
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(libjpeg)
 BuildRequires:	pkgconfig(libIDL-2.0)
+BuildRequires:	pkgconfig(liblzma)
+BuildRequires:	pkgconfig(libnghttp2)
+BuildRequires:	pkgconfig(libnghttp3)
+BuildRequires:	pkgconfig(libngtcp2)
 BuildRequires:	pkgconfig(libopenjp2)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libpulse)
@@ -56,17 +65,14 @@ BuildRequires:	pkgconfig(ogg)
 BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pkgconfig(theora)
 BuildRequires:	pkgconfig(vorbis)
-BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xmlrpc)
 BuildRequires:	pkgconfig(xv)
-BuildRequires:	subversion
-BuildRequires:	xvid-devel
-BuildRequires:	firefox-devel
-BuildRequires:	locales-extra-charsets
-# (Anssi 05/2011) Otherwise partially builds against older version of itself:
+BuildRequires:	pkgconfig(zlib)
+
+# (Anssi 05/2011) Otherwise partially builds against older version of itself
 BuildConflicts:	gpac-devel
-BuildConflicts:	gpac < 0.4.5-2
-Obsoletes:	Osmo4
-Obsoletes:	gpac-browser-plugin
+BuildConflicts:	gpac <= 2.4.0-6
 
 %description
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
@@ -76,124 +82,134 @@ alternative to the MPEG-4 Systems reference software.
 
 The natural evolution has been the integration of recent multimedia standards
 (SVG/SMIL, VRML, X3D, SWF, 3GPP(2) tools, etc) into a single framework.
-VRML97 and a good amount of the X3D standard have already been integrated
-into GPAC, as well as some SVG support and experimental Macromedia Flash
-support.
-
-The current GPAC release (0.4.0) already covers a very large part of the
-MPEG-4 standard, and has some good support for 3GPP and VRML/X3D, and
-features what can probably be seen as the most advanced and robust 2D MPEG-4
-Player available worldwide, as well as a decent 3D player.
+VRML97 and a good amount of the X3D standard have already been integrated into
+GPAC, as well as some SVG support and experimental Macromedia Flash support.
 
 GPAC also features MPEG-4 Systems encoders/multiplexers, publishing tools for
 content distribution for MP4 and 3GPP(2) files and many tools for scene
 descriptions (MPEG4<->VRML<->X3D converters, SWF->MPEG-4, etc...).
 
-This package is in tainted repository because it incorporates MPEG-4
+This package is in Restricted repository because it incorporates MPEG-4
 technology, covered by software patents.
 
+%files
+%license COPYING
+%doc README.md Changelog SECURITY.md
+%{_bindir}/%{name}
+%{_bindir}/MP4Box
+%{_bindir}/MPEG4Gen
+%{_bindir}/X3DGen
+%{_bindir}/SVGGen
+%{_bindir}/WGLGen
+%{_libdir}/%{name}/
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{_datadir}/%{name}/
+%{_mandir}/man1/*.1*
+
+#-----------------------------------------------------------------------------
+
 %package -n %{libname}
-Summary:	GPAC shared library
+Summary:		GPAC shared library
 Group:		System/Libraries
-%rename %{oldlibname}
-Obsoletes: %{_lib}__1_
 
 %description -n %{libname}
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
-from scratch in ANSI C.
-
-This package provides the GPAC shared library.
-
-This package is in tainted repository because it incorporates MPEG-4
+from scratch in ANSI C. This package provides the GPAC shared library.
+This package is in Restricted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
+
+%files -n %{libname}
+%{_libdir}/libgpac.so.%{major}*
+
+#-----------------------------------------------------------------------------
 
 %package -n %{devname}
 Summary:	Development headers and library for gpac
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Provides:	gpac-devel = %{EVRD}
-Conflicts:	%{name}jor
 
 %description -n %{devname}
 Development headers and libraries for gpac.
-
-This package is in tainted repository because it incorporates MPEG-4
+This package is in Restricted repository because it incorporates MPEG-4
 technology which may be covered by software patents.
 
+%files -n %{devname}
+%doc share/doc/html-libgpac/*
+%{_includedir}/%{name}
+%{_libdir}/libgpac.so
+%{_libdir}/libgpac_static.a
+%{_libdir}/pkgconfig/%{name}.pc
+
+#-----------------------------------------------------------------------------
+
 %prep
-%autosetup -p1 %{?snapshot:-n gpac-master}
-# Fix encoding warnings
-cp -p Changelog Changelog.origine
-iconv -f ISO-8859-1 -t UTF8 Changelog.origine > Changelog
-touch -r Changelog.origine Changelog
-rm Changelog.origine
+%autosetup -p1
+
 
 %build
+# Enabling this makes the build fail with clang 22
+#	--enable-fixed-point \
+# Not a regular autotools configure: use the provided one
 %set_build_flags
 ./configure	--verbose \
 		--prefix=%{_prefix} \
 		--mandir=%{_mandir} \
 		--libdir=%{_lib} \
-		--X11-path=%{_prefix} \
-		--use-ffmpeg=system \
+		--X11-path="%{_prefix}/include/X11" \
 		--enable-depth \
-		--enable-jack \
-		--enable-pulseaudio \
-		--enable-fixed-point \
-		--enable-joystick \
-		--enable-amr-nb \
-		--enable-amr-wb \
-		--enable-amr \
+		--enable-pic \
 		--use-a52=system \
+		--use-curl=system \
+		--use-directfb=system \
+		--use-faad=system \
+		--use-ffmpeg=system \
+		--use-freetype=system \
+		--use-jack=system \
+		--use-hid=system \
+		--use-libcaca=system \
+		--use-ogg=system \
+		--use-openjpeg=system \
+		--use-pulseaudio=system \
 		--use-theora=system \
 		--use-vorbis=system \
-		--use-ogg=system \
 		--use-zlib=system \
-		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -fPIC -Ofast" \
+		%if %{with check}
+		--unittests \
+		%endif
+		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -Ofast" \
 		--extra-ldflags="%{ldflags}"
-#sed -i -e 's,-L\${libdir} ,,;s,-L/usr/lib ,,g' applications/mp4client/Makefile modules/jack/Makefile
-# -I/usr/include is harmful...
-sed -i -e '/^Cflags:/d' *.pc
 
-%make_build all
+sed -ie 's/DEBUGBUILD=no/DEBUGBUILD=yes/' config.mak
+
+# Build library, modules and apps
+%make_build
+# Build generators
 %make_build sggen
+# FIXME: Won't automatically build
 %make_build -C applications/generators/SVG
+# Build devel docs
+%make_build doc
+
 
 %install
-# Makefile needs the pkgconfig dir to install the gpac.pc file otherwise it can't
-mkdir -p %{buildroot}%{_libdir}/pkgconfig
-
 %make_install install-lib
 
-# generated sggen binaries
-for i in MPEG4 SVG X3D; do
-    install -m755 applications/generators/$i/${i}Gen \
-    	%{buildroot}%{_bindir}
+# Install built generators binaries
+for i in MPEG4 X3D SVG; do
+    install -m755 applications/generators/$i/${i}Gen %{buildroot}%{_bindir}
 done
 install -m755 applications/generators/WebGLGen/WGLGen %{buildroot}%{_bindir}/
-install -m755 bin/gcc/MP4* bin/gcc/gpac %{buildroot}%{_bindir}
 
-# Why does this crap get installed?
-rm -rf %{buildroot}%{_includedir}/win32 %{buildroot}%{_includedir}/wince
+# Fix rpath
+chrpath -d %{buildroot}%{_libdir}/gpac/gm_sdl_out.so
 
-%files
-%{_bindir}/gpac
-%{_bindir}/MP4Box
-%{_bindir}/MPEG4Gen
-%{_bindir}/X3DGen
-%{_bindir}/SVGGen
-%{_bindir}/WGLGen
-%{_datadir}/applications/gpac.desktop
-%{_datadir}/icons/*/*/*/gpac.png
-%{_libdir}/%{name}/
-%{_datadir}/%{name}/
-%{_mandir}/man1/*
+# -I/usr/include is harmful...
+sed -i -e '/^Cflags:/d' %{buildroot}%{_libdir}/pkgconfig/%{name}.pc
 
-%files -n %{libname}
-%{_libdir}/libgpac.so.%{major}*
 
-%files -n %{devname}
-%{_includedir}/%{name}
-%{_libdir}/libgpac.so
-%{_libdir}/libgpac_static.a
-%{_libdir}/pkgconfig/gpac.pc
+%if %{with check}
+%check
+%make tests_suite
+%endif

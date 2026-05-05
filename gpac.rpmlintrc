@@ -1,0 +1,5 @@
+# Boatload of useless errors
+addFilter("E: incorrect-fsf-address")
+
+# We cannot provide a man page if upstream does not
+addFilter("W: no-manual-page-for-binary")
