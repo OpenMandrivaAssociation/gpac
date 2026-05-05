@@ -1,3 +1,4 @@
+# Test suite requires external data: see  README.md file
 %bcond_with check
 
 %define major	16
@@ -148,6 +149,8 @@ technology which may be covered by software patents.
 
 
 %build
+# Enabling this makes the build fail with clang 22
+#	--enable-fixed-point \
 # Not a regular autotools configure: use the provided one
 %set_build_flags
 ./configure	--verbose \
@@ -156,7 +159,6 @@ technology which may be covered by software patents.
 		--libdir=%{_lib} \
 		--X11-path="%{_prefix}/include/X11" \
 		--enable-depth \
-		--enable-fixed-point \
 		--enable-pic \
 		--use-a52=system \
 		--use-curl=system \
