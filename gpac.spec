@@ -10,7 +10,7 @@
 Summary:	MPEG-4 multimedia framework
 Name:	 	gpac
 Version:		26.02.0
-Release:	%{?snapshot:0.%{snapshot}.}1
+Release:	%{?snapshot:0.%{snapshot}.}2
 License:		LGPLv2+
 Group:		Video
 Url:		https://gpac.io/
@@ -27,7 +27,6 @@ BuildRequires:	doxygen
 BuildRequires:	git
 BuildRequires:	graphviz
 BuildRequires:	imagemagick
-BuildRequires:	libtool-base
 BuildRequires:	locales-extra-charsets
 BuildRequires:	make
 BuildRequires:	slibtool
@@ -112,6 +111,10 @@ technology, covered by software patents.
 %package -n %{libname}
 Summary:		GPAC shared library
 Group:		System/Libraries
+
+# Workaround for a bogus macro expansion in a previous build (before 2026)
+# creating a literal "lib64%{1}" package
+Obsoletes:	%{_lib}%%{1} < %{EVRD}
 
 %description -n %{libname}
 GPAC is a multimedia framework based on the MPEG-4 Systems standard developed
