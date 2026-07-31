@@ -9,18 +9,18 @@
 
 Summary:	MPEG-4 multimedia framework
 Name:	 	gpac
-Version:		26.02.0
+Version:		26.7.0
 Release:	%{?snapshot:0.%{snapshot}.}3
 License:		LGPLv2+
 Group:		Video
 Url:		https://gpac.io/
 Source0:	https://github.com/gpac/gpac/archive/v%{version}/%{name}-%{version}.tar.gz
 Source100:	%{name}.rpmlintrc
-Patch0:		gpac-26.02.0-no-visibility-hidden.patch
-Patch1:		gpac-26.02.0-fix-compile.patch
-Patch2:		gpac-26.02.0-fix-all-implicit-decls.patch
-Patch3:		gpac-26.02.0-drop-rpath.patch
-Patch4:		gpac-26.02.0-fix-redefinition-error.patch
+# dropped (no longer applies): Patch0:		gpac-26.7.0-no-visibility-hidden.patch
+# dropped (no longer applies): Patch1:		gpac-26.7.0-fix-compile.patch
+# dropped (no longer applies): Patch2:		gpac-26.7.0-fix-all-implicit-decls.patch
+# dropped (no longer applies): Patch3:		gpac-26.7.0-drop-rpath.patch
+# dropped (no longer applies): Patch4:		gpac-26.7.0-fix-redefinition-error.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	doxygen
@@ -148,7 +148,7 @@ technology which may be covered by software patents.
 #-----------------------------------------------------------------------------
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n gpac-26.07.0
 
 
 %build
