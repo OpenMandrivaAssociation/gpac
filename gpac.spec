@@ -10,7 +10,7 @@
 Summary:	MPEG-4 multimedia framework
 Name:	 	gpac
 Version:		26.7.0
-Release:	%{?snapshot:0.%{snapshot}.}6
+Release:	%{?snapshot:0.%{snapshot}.}7
 License:		LGPLv2+
 Group:		Video
 Url:		https://gpac.io/
@@ -182,7 +182,7 @@ technology which may be covered by software patents.
 		%if %{with check}
 		--unittests \
 		%endif
-		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -Ofast" \
+		--extra-cflags="%{optflags} -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 -DXP_UNIX -Ofast -DGPAC_ALLOW_UNSAFE_STRFUNC" \
 		--extra-ldflags="%{ldflags}"
 
 sed -ie 's/DEBUGBUILD=no/DEBUGBUILD=yes/' config.mak
