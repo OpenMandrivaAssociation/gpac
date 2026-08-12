@@ -1,0 +1,34 @@
+
+--- gpac-26.07.0/applications/gpac/Makefile	2026-07-24 18:55:39.000000000 +0200
++++ gpac-26.07.0/applications/gpac/Makefile	2026-08-13 01:42:08.552585762 +0200
+@@ -58,8 +58,6 @@ LINKFLAGS+=-lgpac
+ ifeq ($(CONFIG_EMSCRIPTEN),yes)
+ else ifeq ($(CONFIG_DARWIN),yes)
+ #LINKFLAGS+= -Wl,-rpath,'@loader_path'
+-else
+-LINKFLAGS+= -Wl,-rpath,'$$ORIGIN' -Wl,-rpath,$(prefix)/lib -Wl,-rpath-link,../../bin/gcc
+ endif
+ endif
+ 
+
+--- gpac-26.07.0/applications/mp4box/Makefile	2026-07-24 18:55:39.000000000 +0200
++++ gpac-26.07.0/applications/mp4box/Makefile	2026-08-13 01:42:08.552626142 +0200
+@@ -23,8 +23,6 @@ LINKFLAGS=-L../../bin/gcc -L../../extra_
+ ifeq ($(CONFIG_EMSCRIPTEN),yes)
+ else ifeq ($(CONFIG_DARWIN),yes)
+ #LINKFLAGS+= -Wl,-rpath,'@loader_path'
+-else
+-LINKFLAGS+= -Wl,-rpath,'$$ORIGIN' -Wl,-rpath,$(prefix)/lib -Wl,-rpath-link,../../bin/gcc
+ endif
+ 
+ ifeq ($(STATIC_BUILD),yes)
+
+--- gpac-26.07.0/modules/common.mak	2026-07-24 18:55:39.000000000 +0200
++++ gpac-26.07.0/modules/common.mak	2026-08-13 01:42:08.552654812 +0200
+@@ -11,6 +11,4 @@ endif
+ 
+ ifeq ($(CONFIG_EMSCRIPTEN),yes)
+ else ifeq ($(CONFIG_DARWIN),yes)
+-else
+-LDFLAGS+= -Wl,-rpath,'$$ORIGIN' -Wl,-rpath,$(prefix)/lib -Wl,-rpath-link,../../bin/gcc
+ endif

@@ -1,0 +1,39 @@
+--- gpac-26.07.0/applications/generators/SVG/svggen.h
++++ gpac-26.07.0/applications/generators/SVG/svggen.h
+@@ -107,7 +107,17 @@
+ 	GF_List *attrgrps;
+ } SVGGenAttrGrp;
+ 
+-
++SVGGenAttribute *findAttribute(SVGGenElement *e, char *name);
++void generateAttributes(FILE *output, GF_List *attributes, Bool inDefine);
++void generateSVGCode_V1(GF_List *svg_elements);
++void generate_laser_tables_da(GF_List *atts);
++void generate_laser_tables(GF_List *svg_elements);
++u32 generateCoreInfo(FILE *output, SVGGenElement *elt, u32 start);
++u32 generateGenericInfo(FILE *output, SVGGenElement *elt, u32 index, char *pointer_root, u32 start);
++void svgNameToImplementationName(xmlChar *svg_name, char implementation_name[50]);
++void generate_table(GF_List *elements);
++void generateSVGCode_V2(GF_List *svg_elements);
++void generateSVGCode_V3(GF_List *svg_elements);
+ 
+ /*******************************************
+  * Structures needed for static allocation *
+@@ -155,7 +165,7 @@
+ };
+ 
+ /* Sync */
+-static char *sync[] = {
++static char *sync_mode[] = {
+ 	"syncBehavior", "syncBehaviorDefault", "syncTolerance", "syncToleranceDefault", "syncMaster", "syncReference"
+ };
+ 
+@@ -183,7 +193,7 @@
+ 	{ 12, focus },
+ 	{ 7, xlink },
+ 	{ 11, timing },
+-	{ 6, sync },
++	{ 6, sync_mode },
+ 	{ 13, anim },
+ 	{ 5, conditional}
+ };
