@@ -10,7 +10,7 @@
 Summary:	MPEG-4 multimedia framework
 Name:	 	gpac
 Version:		26.7.0
-Release:	%{?snapshot:0.%{snapshot}.}8
+Release:	%{?snapshot:0.%{snapshot}.}9
 License:		LGPLv2+
 Group:		Video
 Url:		https://gpac.io/
@@ -189,7 +189,9 @@ sed -ie 's/DEBUGBUILD=no/DEBUGBUILD=yes/' config.mak
 
 # Build library, modules and apps
 %make_build
-# Build generators
+# Build generators (SVG needs libxml2 flags; not set by gpac configure)
+export XML2_CFLAGS="$(pkg-config --cflags libxml-2.0)"
+export XML2_LIBS="$(pkg-config --libs libxml-2.0)"
 %make_build sggen
 # FIXME: Won't automatically build
 %make_build -C applications/generators/SVG
